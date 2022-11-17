@@ -1,0 +1,4 @@
+#make sure we don't prematurely initialize "result"
+func main void
+    assign v1 result
+endfunc

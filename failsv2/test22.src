@@ -1,0 +1,6 @@
+func main void
+  var int a
+  while 5
+    assign a 5
+  endwhile
+endfunc

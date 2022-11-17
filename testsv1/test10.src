@@ -1,0 +1,16 @@
+func main
+  assign n 5
+  assign f 1
+  funccall fact
+  funccall print result
+endfunc
+
+func fact
+  if == n 0
+    return f
+  endif
+  assign f * f n
+  assign n - n 1
+  funccall fact
+  return result
+endfunc

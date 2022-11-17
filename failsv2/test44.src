@@ -1,0 +1,12 @@
+# incompatible return types
+func fint int
+    var int x
+    assign x - 100 1
+    return False
+endfunc
+
+func main void
+    var int x
+    funccall fint
+    assign x resulti
+endfunc

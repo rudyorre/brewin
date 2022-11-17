@@ -1,0 +1,7 @@
+func main void
+ var int a
+ funccall foo a
+endfunc
+
+func foo v:refbool void
+endfunc

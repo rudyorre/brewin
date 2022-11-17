@@ -1,7 +1,7 @@
 from enum import Enum
 from intbase import InterpreterBase, ErrorType
 from env_v1 import EnvironmentManager
-from tokenize import Tokenizer
+from tokenizer import Tokenizer
 from func_v1 import FunctionManager
 
 # Enumerated type for our different language data types

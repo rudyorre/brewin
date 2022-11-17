@@ -1,0 +1,9 @@
+#making sure we don't assign result, on a null function
+func main
+    funccall f__________________________________________1
+    funccall print result
+endfunc 
+
+func f__________________________________________1
+    funccall print "random"
+endfunc

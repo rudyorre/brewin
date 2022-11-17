@@ -1,0 +1,9 @@
+# make sure they are not using result
+func test x:int int
+    return + x 5
+endfunc
+
+func main void
+    funccall test 10
+    funccall print result
+endfunc

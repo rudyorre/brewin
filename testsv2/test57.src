@@ -1,0 +1,23 @@
+# binary int to string reverse
+func main void
+    var int x
+    assign x 100101011
+    var string s
+    funccall rev x s
+    funccall print s
+endfunc
+
+func rev x:int s:refstring void
+    var int i
+    while > x 0
+        assign i % x 10
+        var bool t1
+        assign t1 == i 0
+        if t1
+            assign s + s "0"
+        else
+            assign s + s "1"
+        endif
+        assign x / x 10
+    endwhile
+endfunc

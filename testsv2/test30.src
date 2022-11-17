@@ -1,0 +1,6 @@
+# this is a comment
+#func main
+ #this is a commment
+func main void
+  funccall print "# comment " True # this is a comment
+endfunc

@@ -1,0 +1,11 @@
+#same thing as 11, but on a return instead of no return statement
+func main
+    funccall f
+    #random comment
+    funccall print result
+endfunc 
+
+func f
+    funccall print "random"
+    return
+endfunc

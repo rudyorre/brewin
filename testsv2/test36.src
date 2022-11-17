@@ -1,0 +1,12 @@
+#make sure students can handle negatives correctly
+
+func main void
+    var int a
+    var string b
+    assign a + -1 -1
+    assign b + "-" "2"
+    funccall strtoint b
+    if == a resulti
+        funccall print "negative string concatenation works correctly"
+    endif
+endfunc

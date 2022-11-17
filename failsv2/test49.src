@@ -1,0 +1,13 @@
+func main void
+  var int a
+  assign a 5
+  if > a 0
+    funccall print a    # prints 5
+    var string a        # legal: shadows our original a variable
+    assign a "foobar"   
+    funccall print a    # prints foobar
+    var bool b
+  endif
+  funccall print a      # prints 5
+  funccall print b      # Name error: b is out of scope
+endfunc

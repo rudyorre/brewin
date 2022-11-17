@@ -1,0 +1,36 @@
+# Church encoding
+# succ = \n. \f. \x. f (n f x)
+func succ n:func func
+  lambda f:func x:int int
+    funccall n f x
+    funccall f resulti
+    return resulti
+  endlambda
+  return resultf
+endfunc
+
+func getnum n:func int
+  lambda x:int int
+    return + x 1
+  endlambda
+  funccall n resultf 0
+  return resulti
+endfunc
+
+func main void
+  var func zero
+  # zero = \f. \x. x
+  lambda f:func x:int int
+    return x
+  endlambda
+  assign zero resultf
+  
+  funccall getnum zero
+  funccall print resulti
+  
+  var func one
+  funccall succ zero
+  assign one resultf
+  funccall getnum one
+  funccall print resulti
+endfunc

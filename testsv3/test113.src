@@ -1,0 +1,61 @@
+func newslist object
+  var object guard
+  assign guard.end True
+  return guard
+endfunc
+
+func cons x:string xs:object object
+  var object hd
+  assign hd.val x
+  assign hd.next xs
+  assign hd.end False
+  return hd
+endfunc
+
+func filter f:func l:object object
+  if l.end
+    return l
+  else
+    var object rres
+    funccall filter f l.next
+    assign rres resulto
+    funccall f l.val
+    if resultb
+      funccall cons l.val rres
+      return resulto
+    else
+      return rres
+    endif
+  endif
+endfunc
+
+func printslist l:object void
+  if != l.end True
+    funccall print l.val
+    funccall printslist l.next
+  endif
+endfunc
+
+func posnumstr s:string bool
+  funccall strtoint s
+  if > resulti 0
+    return True
+  else
+    return False
+  endif
+endfunc
+
+func main void
+  funccall newslist
+  funccall cons "-1" resulto
+  funccall cons "100" resulto
+  funccall cons "-52" resulto
+  funccall cons "3" resulto
+  funccall cons "66" resulto
+  funccall cons "-123" resulto
+  funccall cons "876654" resulto
+  
+  funccall filter posnumstr resulto
+
+  funccall printslist resulto
+endfunc

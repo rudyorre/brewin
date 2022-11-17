@@ -1,0 +1,13 @@
+#test greater than or equal to, on <= and >= for strings
+func main void
+    var bool A B C D
+    assign A == "A" "a"
+    assign B == "#" "#"
+    assign C >= "#" "#"
+    assign D <= "#" "#"
+
+    funccall print A
+    funccall print B
+    funccall print C
+    funccall print D
+endfunc

@@ -1,0 +1,39 @@
+#mutually recursive functions
+
+func even
+    if == n 0
+        return True
+    endif
+    assign n - n 1
+    funccall odd
+    return result
+endfunc
+
+func odd
+    if == n 0
+        return False
+    endif
+    assign n - n 1
+    funccall even
+    return result
+endfunc
+
+func isEven
+    funccall even
+    if == result True
+        funccall print "number is even"
+    else
+        funccall print "number is odd"
+    endif
+endfunc
+
+func main
+    assign n 15
+    funccall isEven
+    assign n 20
+    funccall isEven
+    assign n 0
+    funccall isEven
+    assign n 148
+    funccall isEven
+endfunc

@@ -1,0 +1,6 @@
+#making sure strings are different from constants
+func main void
+    if == True "True"
+        funccall print "this is wrong"
+    endif
+endfunc

@@ -1,0 +1,38 @@
+# ensure all ref is working
+
+func main void
+    funccall fint 10
+    funccall fstr "a str"
+    funccall fbool False
+    
+    var string x
+    var int y
+    var bool z
+    assign x "b str"
+    assign y 42
+    assign z True
+
+    funccall fint y
+    funccall fstr x
+    funccall fbool z
+
+    funccall print x
+    funccall print y
+    funccall print z
+endfunc
+
+func fint x:refint void
+    assign x - x 142
+endfunc
+
+func fstr x:refstring void
+    assign x + x "321"
+endfunc
+
+func fbool x:refbool void
+    if x
+        assign x False
+    else
+        assign x True
+    endif
+endfunc

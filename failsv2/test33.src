@@ -1,0 +1,19 @@
+#testing type error for if else 
+
+func main void
+    if True 
+        if True
+            if True
+                if True
+                    if True
+                     funccall print "True"
+                    else
+                    endif
+                endif
+            endif
+        endif
+    else
+    endif
+    if "True"
+    endif
+endfunc

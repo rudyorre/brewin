@@ -1,0 +1,21 @@
+func main void
+  var int a
+  var object o
+
+  assign a 5
+  assign o.x 10
+
+  lambda void 
+    assign a + a 1
+    funccall print a  # prints 6
+    assign o.x 20     # prints 20
+    funccall print o.x
+  endlambda
+
+  var func f
+  assign f resultf
+  funccall f
+
+  funccall print a    # prints 5
+  funccall print o.x  # prints 10
+endfunc

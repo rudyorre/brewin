@@ -1,0 +1,21 @@
+func main
+  assign a 5
+  funccall foo
+  funccall print "return from foo was " result
+  return
+  funccall print "should not print main"
+endfunc
+
+func foo
+  funccall bar
+  funccall print "return from bar was " result
+  return + 10 5
+endfunc
+
+func bar
+  if > a 0
+    return 20
+  endif
+  funccall print "should not print bar"
+  return 1000
+endfunc

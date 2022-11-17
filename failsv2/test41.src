@@ -1,0 +1,6 @@
+# should get type error for invalid assign
+func main void
+    var int x
+    var string b
+    assign b + x 10
+endfunc

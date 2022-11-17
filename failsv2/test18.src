@@ -1,0 +1,4 @@
+func main void
+  var int c
+  assign C 5
+endfunc

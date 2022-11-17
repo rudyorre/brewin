@@ -1,0 +1,12 @@
+#testing to make sure we can return inside a while loop
+func new_function
+    while True
+        return 7
+    endwhile
+endfunc
+
+func main
+    funccall print "testing 123"
+    funccall new_function
+    funccall print result
+endfunc

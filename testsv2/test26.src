@@ -1,0 +1,33 @@
+func main void
+  if > 20 10
+    funccall print "20 > 10"
+    if > 30 10
+      funccall print "30 > 10"
+    else
+      funccall print "10 > 30"
+    endif
+    funccall print "end-if"
+  else
+    funccall print "start else"
+    funccall print "10 > 20"
+    if > 40 10
+      funccall print "40 > 10"
+    else
+      funccall print "10 > 40"
+    endif
+    funccall print "end-else"
+  endif
+  if > 10 20
+    funccall print "this shouldn't print"
+  else
+    funccall print "this should print"
+  endif
+  funccall print "end-if2"
+  if > 0 10
+    funccall print "this shouldn't print"
+  endif
+  if > 10 0
+    funccall print "this should print"
+  endif
+  funccall print "at end"
+endfunc

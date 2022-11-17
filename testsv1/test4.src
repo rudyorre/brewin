@@ -1,0 +1,5 @@
+func main
+  funccall strtoint "123456789"
+  assign var result
+  funccall print var
+endfunc

@@ -1,0 +1,20 @@
+#strtoint an number with leading 0s
+func main void
+    var string a b c d e
+    assign a "0"
+    assign b "00"
+    assign c + b "1" #001
+    assign d + "-" c #-001
+    assign e "-000000000000000000000000000001234"
+
+    funccall strtoint a
+    funccall print resulti
+    funccall strtoint b
+    funccall print resulti
+    funccall strtoint c
+    funccall print resulti
+    funccall strtoint d
+    funccall print resulti
+    funccall strtoint e
+    funccall print resulti
+endfunc

@@ -1,0 +1,17 @@
+#check the indentation handling`
+func main void
+    var int a b
+    assign a 1
+    assign b 2
+
+    if == a b
+        if == 1 0  
+            funccall print "should not print"
+        else 
+            funccall print "should also not print"
+        endif
+    else
+        funccall print "this should print"
+    endif
+endfunc
+

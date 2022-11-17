@@ -1,0 +1,8 @@
+func main void
+  var string b
+  funccall foo b
+endfunc
+
+func foo a:int void
+  funccall print a
+endfunc

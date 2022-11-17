@@ -1,0 +1,14 @@
+#empty functions 
+
+func main void
+    funccall empty
+    funccall almost_empty
+    funccall print "test output"
+endfunc
+
+func empty void
+endfunc
+
+func almost_empty void
+#random comment
+endfunc 

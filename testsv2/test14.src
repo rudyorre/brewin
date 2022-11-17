@@ -1,0 +1,14 @@
+func main void
+  var int q
+  assign q 42
+  funccall foo q
+  funccall print q
+endfunc
+
+func foo a:refint void
+  funccall bar a
+endfunc
+
+func bar a:refint void
+  assign a 10
+endfunc

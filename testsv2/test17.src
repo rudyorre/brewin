@@ -1,0 +1,9 @@
+func main void
+  funccall foo 20
+  # should work and the temporary value will be changed by the call to foo, then
+  # the temp value is thrown away
+endfunc
+
+func foo a:refint void
+  assign a 10
+endfunc

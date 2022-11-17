@@ -1,0 +1,10 @@
+# invalid type checks
+func main void
+    var bool x
+    funccall test x
+endfunc
+
+func test x:refint void
+    var bool bl
+    assign bl x
+endfunc

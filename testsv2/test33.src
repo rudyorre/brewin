@@ -1,0 +1,14 @@
+# make sure functions can call up and down
+func main void
+ funccall foo
+endfunc
+
+func bar void
+ funccall print 5
+ return
+endfunc
+
+func foo void
+ funccall bar 
+ return
+endfunc

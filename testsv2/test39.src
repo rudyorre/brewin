@@ -1,0 +1,18 @@
+#testing empty functions 
+func main void
+    funccall foo 
+    funccall g____x
+    funccall g19023457890235890238590238509823590
+endfunc 
+
+func foo void
+    #test
+endfunc
+
+func g____x void
+    funccall print "underscore successful"
+endfunc 
+
+                        func g19023457890235890238590238509823590 void
+                            funccall print "numbers successful"
+                        endfunc

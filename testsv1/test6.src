@@ -1,0 +1,13 @@
+func main
+  assign i 0
+  while < i 2 
+    funccall print "Outer: " i
+    assign j 3 
+    while > j 0
+      funccall print "Inner: " j
+      assign j - j 1
+    endwhile
+    funccall print "Outer end: " i
+    assign i + i 1
+  endwhile
+endfunc

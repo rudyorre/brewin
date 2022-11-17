@@ -3,18 +3,19 @@ from enum import Enum
 from env_v2 import EnvironmentManager, SymbolResult
 from func_v2 import FunctionManager
 from intbase import InterpreterBase, ErrorType
-from tokenize import Tokenizer
+from tokenizer import Tokenizer
 
-# Enumerated type for our different language data types
 class Type(Enum):
-  INT = 1
-  BOOL = 2
-  STRING = 3
-  VOID = 4
+    '''Enumerated type for our different language data types.'''
+    INT = 1
+    BOOL = 2
+    STRING = 3
+    VOID = 4
+    FUNC = 5
 
-# Represents a value, which has a type and its value
 class Value:
-  def __init__(self, type, value = None):
+  '''Represents a value, which has a type and its value.'''
+  def __init__(self, type: Type, value=None):
     self.t = type
     self.v = value
 
@@ -28,16 +29,16 @@ class Value:
   def type(self):
     return self.t
 
-# Main interpreter class
 class Interpreter(InterpreterBase):
+  '''Main interpreter class.'''
   def __init__(self, console_output=True, input=None, trace_output=False):
     super().__init__(console_output, input)
     self._setup_operations()  # setup all valid binary operations and the types they work on
     self._setup_default_values()  # setup the default values for each type (e.g., bool->False)
     self.trace_output = trace_output
 
-  # run a program, provided in an array of strings, one string per line of source code
   def run(self, program):
+    '''Run a program, provided in an array of strings, one string per line of source code.'''
     self.program = program
     self._compute_indentation(program)  # determine indentation of every line
     self.tokenized_program = Tokenizer.tokenize_program(program)
@@ -82,6 +83,10 @@ class Interpreter(InterpreterBase):
         self._endwhile(args)
       case InterpreterBase.VAR_DEF: # v2 statements
         self._define_var(args)
+      case InterpreterBase.LAMBDA_DEF:
+        pass
+      case InterpreterBase.ENDLAMBDA_DEF:
+        pass
       case default:
         raise Exception(f'Unknown command: {tokens[0]}')
 
@@ -118,8 +123,8 @@ class Interpreter(InterpreterBase):
       self._create_new_environment(args[0], args[1:])  # Create new environment, copy args into new env
       self.ip = self._find_first_instruction(args[0])
 
-  # create a new environment for a function call
   def _create_new_environment(self, funcname, args):
+    '''Create a new environment for a function call.'''
     formal_params = self.func_manager.get_function_info(funcname)
     if formal_params is None:
         super().error(ErrorType.NAME_ERROR, f"Unknown function name {funcname}", self.ip)
@@ -187,9 +192,11 @@ class Interpreter(InterpreterBase):
     self._advance_to_next_statement()
     self.env_manager.block_unnest()
 
-  # we would only run this if we ran the successful if block, and fell into the else at the end of the block
-  # so we need to delete the old top environment
   def _else(self):
+    '''
+    We would only run this if we ran the successful if block, and fell into the else at the end of the block
+    so we need to delete the old top environment.
+    '''
     self.env_manager.block_unnest()   # Get rid of env for block above
     for line_num in range(self.ip+1, len(self.tokenized_program)):
       tokens = self.tokenized_program[line_num]
@@ -308,10 +315,11 @@ class Interpreter(InterpreterBase):
   def _setup_default_values(self):
     # set up what value to return as the default value for each type
     self.type_to_default = {}
-    self.type_to_default[InterpreterBase.INT_DEF] = Value(Type.INT,0)
-    self.type_to_default[InterpreterBase.STRING_DEF] = Value(Type.STRING,'')
-    self.type_to_default[InterpreterBase.BOOL_DEF] = Value(Type.BOOL,False)
-    self.type_to_default[InterpreterBase.VOID_DEF] = Value(Type.VOID,None)
+    self.type_to_default[InterpreterBase.INT_DEF] = Value(Type.INT, 0)
+    self.type_to_default[InterpreterBase.STRING_DEF] = Value(Type.STRING, '')
+    self.type_to_default[InterpreterBase.BOOL_DEF] = Value(Type.BOOL, False)
+    self.type_to_default[InterpreterBase.VOID_DEF] = Value(Type.VOID, None)
+    self.type_to_default[InterpreterBase.FUNC_DEF] = Value(Type.FUNC, None)
 
     # set up what types are compatible with what other types
     self.compatible_types = {}
@@ -329,6 +337,7 @@ class Interpreter(InterpreterBase):
     self.type_to_result[Type.INT] = 'i'
     self.type_to_result[Type.STRING] = 's'
     self.type_to_result[Type.BOOL] = 'b'
+    self.type_to_result[Type.FUNC] = 'f'
 
   # run a program, provided in an array of strings, one string per line of source code
   def _setup_operations(self):
@@ -406,8 +415,8 @@ class Interpreter(InterpreterBase):
     self.env_manager.create_new_symbol(result_var, True)  # create in top block if it doesn't exist
     self.env_manager.set(result_var, copy.copy(value_type))
 
-  # evaluate expressions in prefix notation: + 5 * 6 x
   def _eval_expression(self, tokens):
+    '''Evaluate expressions in prefix notation: + 5 * 6 x.'''
     stack = []
 
     for token in reversed(tokens):

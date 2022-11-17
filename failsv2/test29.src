@@ -1,0 +1,10 @@
+#function name as a variable 
+func main void
+    var string func_name
+    assign func_name "foo"
+    funccall func_name
+endfunc 
+
+    func foo void
+        funccall print "calling foo correctly"
+    endfunc

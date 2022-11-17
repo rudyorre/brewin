@@ -1,0 +1,4 @@
+func main
+ assign v1 20
+ funccall print v1
+endfunc

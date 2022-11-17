@@ -1,0 +1,9 @@
+#differentiate between subtraction and negatives
+func main
+    assign B - 5 6 
+    assign b -5
+    assign C - -5 6
+    funccall print B
+    funccall print b
+    funccall print C
+endfunc

@@ -1,0 +1,12 @@
+#type error for strtoint
+#the infinite loop should never run
+func main void
+    var string s
+    var int S
+    assign s "1234"
+    assign S 1234
+    funccall strtoint s
+    funccall strtoint S
+    while True
+    endwhile
+endfunc

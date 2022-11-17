@@ -1,0 +1,20 @@
+func main void
+  funccall input "Enter a number: "
+  var string str_val
+  assign str_val results
+  funccall strtoint str_val
+  var int n
+  assign n resulti
+  funccall factorial n
+  funccall print resulti
+endfunc
+
+func factorial n:int int
+  if == n 0
+    return 1
+  endif
+  var int a
+  assign a - n 1
+  funccall factorial a
+  return * n resulti
+endfunc

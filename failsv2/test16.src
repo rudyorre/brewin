@@ -1,0 +1,7 @@
+func main void
+  if False
+  else
+    var int a
+  endif
+  assign a 5
+endfunc

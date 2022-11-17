@@ -1,0 +1,5 @@
+func main
+  if 5
+    assign a 5
+  endif
+endfunc

@@ -1,0 +1,29 @@
+# check if input is palindrome
+func main void
+    funccall input
+    var string sas
+    assign sas results
+    funccall strtoint sas
+    var string s
+    funccall rev resulti s
+    if == sas s
+        funccall print "Yes"
+    else
+        funccall print "No"
+    endif
+endfunc
+
+func rev x:int s:refstring void
+    if == x 0
+        return
+    endif
+    var int i
+    assign i % x 10
+    if == i 0
+        assign s + s "0"
+    else
+        assign s + s "1"
+    endif
+    assign x / x 10
+    funccall rev x s
+endfunc

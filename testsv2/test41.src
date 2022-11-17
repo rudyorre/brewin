@@ -1,0 +1,10 @@
+#differentiate between subtraction and negatives
+func main void
+    var int B b C
+    assign B - 5 6 
+    assign b -5
+    assign C - -5 6
+    funccall print B
+    funccall print b
+    funccall print C
+endfunc

@@ -1,0 +1,3 @@
+func main void
+  assign v 1
+endfunc

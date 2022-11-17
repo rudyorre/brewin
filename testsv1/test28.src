@@ -1,0 +1,23 @@
+#double a string, recursively
+
+func main
+    assign n 4
+    assign result "a"
+    funccall double
+    funccall print result
+
+    assign n 6
+    assign result "##"
+    funccall double
+    funccall print result
+
+endfunc
+
+func double
+    if == n 0
+        return
+    endif
+    assign n - n 1
+    assign result + result result
+    funccall double
+endfunc

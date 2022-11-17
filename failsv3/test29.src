@@ -1,0 +1,7 @@
+func f x:int object
+  return x
+endfunc
+
+func main void
+  funccall f 5
+endfunc

@@ -1,0 +1,19 @@
+func main void
+  var bool r s
+  assign r == True True
+  assign s == False True
+  funccall print r " " s
+
+  var bool t u v
+  assign t > "z" "a"
+  assign u >= "z" "a"
+  assign v >= "a" "a"
+  funccall print t " " u " " v
+
+  assign t < "a" "z"
+  assign u <= "a" "z"
+  assign v <= "a" "a"
+  funccall print t " " u " " v
+
+endfunc
+

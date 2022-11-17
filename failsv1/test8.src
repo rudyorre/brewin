@@ -1,0 +1,8 @@
+#tests whether ip is correct due to comments and newlines 
+
+func main
+
+    assign v1 "7"
+    assign v2 6
+    assign v3 + v1 v2
+endfunc

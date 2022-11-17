@@ -1,0 +1,18 @@
+func main void
+  var object o
+  assign o.a 100
+  if True
+    assign o.a "bar"
+    var object o
+    assign o.b True
+    if == o.b False
+      funccall print o.a
+    else
+      assign o.a 10
+    endif
+    var int y
+    assign y - o.a 8
+  endif
+  var int z
+  assign z + o.a 5
+endfunc

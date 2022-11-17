@@ -1,0 +1,11 @@
+#while statement with invalid expression
+func main void
+    funccall main2
+endfunc
+
+func main2 int
+    while + True 5
+        return -7
+    endwhile
+    return
+endfunc

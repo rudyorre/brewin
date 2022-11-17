@@ -1,0 +1,16 @@
+func main
+    funccall whileTrue
+    funccall whileTrueQuotes
+endfunc
+
+func whileTrue
+    while True
+        return 7
+    endwhile
+endfunc
+
+func whileTrueQuotes
+    while "True"
+        return 7
+    endwhile
+endfunc

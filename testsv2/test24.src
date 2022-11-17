@@ -1,0 +1,22 @@
+func main void
+  var int a
+  assign a 5
+  funccall foo a
+  funccall print "return from foo was " resulti
+  return
+  funccall print "should not print main"
+endfunc
+
+func foo a:int int
+  funccall bar a
+  funccall print "return from bar was " resulti
+  return + 10 5
+endfunc
+
+func bar a:int int
+  if > a 0
+    return 20
+  endif 
+  print "should not print bar"
+  return 1000
+endfunc

@@ -1,0 +1,10 @@
+# ensure variables are not globals
+func foo void
+    funccall print x
+endfunc
+
+func main void
+    var int x
+    assign x 69
+    funccall foo
+endfunc

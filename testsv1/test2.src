@@ -1,0 +1,4 @@
+func main
+  funccall input "Enter a name: "
+  funccall print "Hello, " result 
+endfunc

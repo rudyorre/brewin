@@ -1,0 +1,10 @@
+func main void
+    funccall function
+    funccall print resulti
+    assign resulti 100
+    funccall print resulti
+endfunc
+
+func function int
+    return 69
+endfunc

@@ -1,0 +1,6 @@
+func main void
+  funccall strtoint "123456789"
+  var int v
+  assign v resulti
+  funccall print v
+endfunc

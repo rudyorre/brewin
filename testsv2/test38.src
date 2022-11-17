@@ -1,0 +1,12 @@
+#testing underscores and capitalization in variables  
+func main void
+    var int a__1 B b
+    var bool res res2
+    assign a__1 1
+    assign B a__1
+    assign b 2
+    assign res > B b
+    assign res2 > a__1 a__1
+    funccall print res
+    funccall print res2
+endfunc

@@ -1,0 +1,16 @@
+# nested passing reference
+func main void
+    var string x
+    funccall test x
+    funccall print x
+endfunc
+
+func test x:string void
+    assign x "123"
+    funccall test2 x
+    funccall print x
+endfunc
+
+func test2 x:refstring void
+    assign x + x "696"
+endfunc

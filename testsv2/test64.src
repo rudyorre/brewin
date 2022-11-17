@@ -1,0 +1,13 @@
+# test returning a ref
+func main void
+    var string x
+    assign x "123"
+    funccall test x
+    funccall print x
+    funccall print results
+endfunc
+
+func test x:refstring string
+    assign x + x "321"
+    return x
+endfunc

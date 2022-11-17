@@ -1,0 +1,26 @@
+# this is in the spec!
+
+func create_lambda x:int func
+  lambda y:int int     # defines a lambda/closure and stores in resultf
+    var int z
+    assign z + x y
+    return z
+  endlambda
+
+  return resultf       # return our lambda/closure
+endfunc
+
+func main void
+  var func f g
+  funccall create_lambda 10   # create a lambda that captures x=10
+  assign f resultf            # f holds our lambda's closure
+
+  funccall create_lambda 100  # create a lambda that captures x=100
+  assign g resultf            # f holds our lambda's closure
+
+  funccall f 42
+  funccall print resulti      # prints 52
+
+  funccall g 42
+  funccall print resulti      # prints 142
+endfunc

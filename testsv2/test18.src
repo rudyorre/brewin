@@ -1,0 +1,13 @@
+func main void
+  var string b
+  assign b "foo"
+  funccall foo b
+endfunc
+
+func foo a:refstring void
+  funccall bar a
+endfunc
+
+func bar b:string void
+  funccall print b
+endfunc

@@ -1,0 +1,10 @@
+func ifunc n:int int
+ return n 
+endfunc
+
+func main void
+  var string s
+ 
+  funccall ifunc 42
+  assign s resulti
+endfunc

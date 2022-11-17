@@ -3,7 +3,7 @@ from enum import Enum
 from env_v2 import EnvironmentManager, SymbolResult
 from func_v2 import FunctionManager
 from intbase import InterpreterBase, ErrorType
-from tokenize import Tokenizer
+from tokenizer import Tokenizer
 
 # Enumerated type for our different language data types
 class Type(Enum):

@@ -1,0 +1,15 @@
+# reference to constant should be reflected in functions
+func main void
+    funccall test 50
+endfunc
+
+func test x:refint void
+    assign x 20
+    funccall test2 x
+    funccall print x
+endfunc
+
+func test2 x:refint void
+    assign x 90
+    funccall print x
+endfunc

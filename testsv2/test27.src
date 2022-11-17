@@ -1,0 +1,39 @@
+
+func main void
+  var int b
+  assign b 3
+  var int ai
+  assign ai + 1 b
+  funccall print ai
+  assign ai * 2 b
+  funccall print ai
+  assign ai - 2 b
+  funccall print ai
+  assign ai / 20 b
+  funccall print ai
+  assign ai % 20 b
+  funccall print ai
+  var bool a
+  assign a > b 0
+  funccall print a
+  assign a > 0 b
+  funccall print a
+  assign a >= b 0
+  funccall print a
+  assign a >= 0 b
+  funccall print a
+  assign a >= b b
+  funccall print a
+  assign a <= b b
+  funccall print a
+  assign a & True True
+  funccall print a
+  assign a & False True
+  funccall print a
+  assign a | True True
+  funccall print a
+  assign a | False True
+  funccall print a
+  assign a | False False
+  funccall print a
+endfunc

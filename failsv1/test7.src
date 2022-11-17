@@ -1,0 +1,4 @@
+func main
+ assign v1 20
+ assign v2 V1
+endfunc

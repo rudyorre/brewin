@@ -1,0 +1,24 @@
+# sasign reftype to type
+func main void
+    funccall fint 10
+    funccall fbool True
+    funccall fstr "a string"
+endfunc
+
+func fint x:refint void
+    var int y
+    assign y x
+    funccall print y
+endfunc
+
+func fbool x:refbool void
+    var bool y
+    assign y x
+    funccall print y
+endfunc
+
+func fstr x:refstring void
+    var string y
+    assign y x
+    funccall print y
+endfunc

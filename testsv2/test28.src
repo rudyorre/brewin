@@ -1,0 +1,7 @@
+func main void
+  var int a
+  assign a -1
+  var int b
+  assign b - a -10
+  funccall print a " " b
+endfunc

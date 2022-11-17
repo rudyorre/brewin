@@ -1,0 +1,8 @@
+#name error -- undefined variable
+func main void
+    var string var_78
+    assign var_78 + "7" "8"
+    while true
+        funccall print "should not print"
+    endwhile
+endfunc

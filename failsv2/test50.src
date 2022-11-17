@@ -1,0 +1,7 @@
+func main void
+    var int x y z
+    assign x 10
+    assign y 20
+    assign z 30
+    var int y
+endfunc

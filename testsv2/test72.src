@@ -1,0 +1,17 @@
+func test int
+endfunc
+
+func test2 string
+endfunc
+
+func test3 bool
+endfunc
+
+func main void
+    funccall test
+    funccall print resulti
+    funccall test2
+    funccall print results
+    funccall test3
+    funccall print resultb
+endfunc

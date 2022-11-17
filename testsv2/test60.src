@@ -1,0 +1,34 @@
+func main void
+    funccall fint 10
+    funccall fstr "a str"
+    funccall fbool False
+    
+    var string x
+    var int y
+    var bool z
+    assign x "b str"
+    assign y 42
+    assign z True
+
+    funccall fint y
+    funccall fstr x
+    funccall fbool z
+
+    funccall print results
+endfunc
+
+func fint x:refint int
+    return x
+endfunc
+
+func fstr x:refstring string
+    return x
+endfunc
+
+func fbool x:refbool bool
+    if x
+        return True
+    else
+        return False
+    endif
+endfunc

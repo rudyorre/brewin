@@ -1,0 +1,14 @@
+# nested variable scoping, with while
+func main void
+    var int a
+    assign a 5
+    while True
+        var int a
+        assign a 10
+        if == a 10
+            assign a - a 4
+            funccall print a
+            return
+        endif
+    endwhile
+endfunc

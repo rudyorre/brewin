@@ -1,0 +1,21 @@
+# make sure result values don't override each other for different types
+func main void
+    funccall fint
+    funccall fbool
+    funccall fstr
+    funccall print resulti
+    funccall print results
+    funccall print resultb
+endfunc
+
+func fint int
+    return 69
+endfunc
+
+func fbool bool
+    return True
+endfunc
+
+func fstr string
+    return "a string"
+endfunc

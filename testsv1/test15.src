@@ -1,0 +1,17 @@
+func main
+  funccall input "Enter a number: "
+  assign str_val result 
+  funccall strtoint str_val
+  assign n result
+  funccall factorial
+  funccall print result
+endfunc
+
+func factorial
+  assign f 1
+  while > n 1
+    assign f * f n
+    assign n - n 1
+  endwhile
+  return f
+endfunc

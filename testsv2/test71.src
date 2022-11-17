@@ -1,0 +1,11 @@
+# make sure that no one is using result
+func fint x:int int
+    return + x 40
+endfunc
+
+func main void
+    var int result
+    assign result 129
+    funccall fint 29
+    funccall print result
+endfunc

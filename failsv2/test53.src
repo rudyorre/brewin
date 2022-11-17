@@ -1,0 +1,5 @@
+# input
+func main void
+    funccall input
+    funccall print resultb
+endfunc

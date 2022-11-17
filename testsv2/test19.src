@@ -1,0 +1,10 @@
+func foo a:refint int
+  return a
+endfunc
+
+func main void
+  var int x
+  assign x 5
+  funccall foo x
+  funccall print resulti
+endfunc 

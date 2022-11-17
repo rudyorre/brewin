@@ -1,0 +1,9 @@
+#function name as a variable 
+func main 
+    assign func_name "foo"
+    funccall func_name
+endfunc 
+
+    func foo
+        funccall print "calling foo correctly"
+    endfunc

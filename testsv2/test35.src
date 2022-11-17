@@ -1,0 +1,17 @@
+# makes sure students don't convert to int early 
+func main void
+    var string a b
+    var int c d
+    assign a "7"
+    assign b "8"
+    assign c 7
+    assign d 8
+
+    if == + a b "78" 
+        funccall print "string concatenation works correctly"
+    endif 
+
+    if == + c d 15
+        funccall print "addition works correctly"
+    endif 
+endfunc

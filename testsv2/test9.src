@@ -1,0 +1,101 @@
+func f1def int
+endfunc # default value returned
+
+func f2def bool
+endfunc # default value returned
+
+func f3def string
+endfunc # default value returned
+
+func f1defr int
+ return # default value
+endfunc
+
+func f2defr bool
+ return # default value
+endfunc
+
+func f3defr string
+ return # default value
+endfunc
+
+func f1 int
+ return 1
+endfunc
+
+func f2 bool
+ return True
+endfunc
+
+func f3 string
+ return "foo"
+endfunc
+
+func fv void
+endfunc
+
+func fvr void
+ return
+endfunc
+
+func f1p p:int int
+ return p
+endfunc
+
+func f2p p:bool bool
+ return p
+endfunc
+
+func f3p p:string string
+ return p
+endfunc
+
+func fvp p:int void
+endfunc
+
+func main void
+  funccall f1def
+  funccall print resulti
+  funccall f2def
+  funccall print resultb
+  funccall f3def
+  funccall print results
+
+  funccall f1defr
+  funccall print resulti
+  funccall f2defr
+  funccall print resultb
+  funccall f3defr
+  funccall print results
+  
+  funccall f1
+  funccall print resulti
+  funccall f2
+  funccall print resultb
+  funccall f3
+  funccall print results
+
+  funccall fv
+  funccall print resulti
+  funccall print resultb
+  funccall print results
+  funccall fvr
+  funccall print resulti
+  funccall print resultb
+  funccall print results
+  
+  funccall f1p 5
+  funccall print resulti
+
+  funccall f2p True
+  funccall print resultb
+  
+  funccall f3p "bar"
+  funccall print results
+
+  funccall fvp 5
+  funccall print resulti 
+  funccall print resultb 
+  funccall print results 
+
+endfunc

@@ -1,0 +1,5 @@
+func main void
+ var int v1 v2
+ assign v1 20
+ assign v2 V1
+endfunc

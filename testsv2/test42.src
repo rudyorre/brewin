@@ -1,0 +1,9 @@
+func main void
+    var int a b c d e
+    assign a 1
+    assign b 2
+    assign c 3
+    assign d 4
+    assign e * + a b + c d
+    funccall print e
+endfunc

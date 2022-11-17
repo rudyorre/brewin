@@ -1,0 +1,16 @@
+func main void
+  var int n
+  assign n 5
+  funccall fact n
+  funccall print resulti
+endfunc
+
+func fact n:int int
+  if == n 0
+    return 1
+  endif
+  var int a
+  assign a - n 1
+  funccall fact a
+  return * n resulti
+endfunc

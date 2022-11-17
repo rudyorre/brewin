@@ -1,0 +1,24 @@
+func main void
+  var int i
+  var func fizzbuzz
+  lambda x:int void
+    if & == % x 3 0 == % x 5 0
+      funccall print "FizzBuzz"
+      return
+    endif
+    if == % x 3 0
+      funccall print "Fizz"
+      return
+    endif
+    if == % x 5 0
+      funccall print "Buzz"
+      return
+    endif
+    funccall print x
+  endlambda
+  assign fizzbuzz resultf
+  while < i 100
+    funccall fizzbuzz i
+    assign i + i 1
+  endwhile
+endfunc
