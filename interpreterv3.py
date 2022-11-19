@@ -172,6 +172,12 @@ class Interpreter(InterpreterBase):
       else:
         tmp_mappings[formal_name] = copy.copy(arg)
 
+    for (var, var_type, var_name) in formal_params.captured_variables:
+      if self.env_manager.is_variable(var_name):
+        tmp_mappings[var_name] = self.env_manager.get(var_name)
+      else:
+        tmp_mappings[var_name] = var
+
     # create a new environment for the target function
     # and add our parameters to the env
     self.env_manager.push()
@@ -201,7 +207,7 @@ class Interpreter(InterpreterBase):
       lambda_func.params.append((var_name, type_name))
     # Get return type
     lambda_func.return_type = args[-1]
-    
+
     for line_num in range(self.ip + 1, len(self.tokenized_program)):
       tokens = self.tokenized_program[line_num]
       if not tokens:
@@ -209,9 +215,20 @@ class Interpreter(InterpreterBase):
       if tokens[0] == InterpreterBase.ENDLAMBDA_DEF and self.indents[self.ip] == self.indents[line_num]:
         self.ip = line_num + 1
         self._set_result(Value(Type.FUNC, lambda_func))
+        print('lambda function:')
+        print(' params:', lambda_func.params)
+        print(' return:', lambda_func.return_type)
+        print(' captur:', lambda_func.captured_variables)
         return
       else:
-        pass # for loop to capture all non-parameter variables that are used
+        # for loop to capture all non-parameter variables that are used
+        for token in tokens:
+          if self.env_manager.is_variable(token):
+            var = self.env_manager.get(token)
+            lambda_func.captured_variables.append((copy.copy(var), var.type(), token))
+    
+    
+
 
   def _endlambda(self, return_val=None):
     self._endfunc()

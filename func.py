@@ -7,6 +7,7 @@ class FuncInfo:
     # For lambdas only:
     self.code = None
     self.return_type = None
+    self.captured_variables = []
 
   def capture(self, tokenized_function):
     self.code = tokenized_function

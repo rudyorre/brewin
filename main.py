@@ -26,8 +26,11 @@ func create_lambda_2 func
 endfunc
 
 func main void
+    var string z
+    assign z "deez"
+
     lambda x:string y:int string
-        funccall print "Hello " x ", you are " y " years old now?"
+        funccall print z " Hello " x ", you are " y " years old now?"
         return "Deez nuts"
     endlambda
 
