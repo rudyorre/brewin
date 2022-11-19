@@ -14,22 +14,29 @@ func create_lambda x:int func
         assign z + x y
         return z
     endlambda
-
+    funccall print "Hello"
     return resultf # return lambda/closure
 endfunc
 
-func main void
-    var func f
-    funccall create_lambda 10
-    # assign f resultf
+func create_lambda_2 func
+    lambda void
+        funccall print "Hello World!"
+    endlambda
+    return resultf
+endfunc
 
-    # funccall f 42
+func main void
+
+    # var type f
+    # funccall resultf
+
+
     # funccall print resulti # prints 52
 endfunc
 '''
 
 def main():
-    interpreter = brewin.Interpreter()
+    interpreter = brewin.Interpreter(trace_output=False)
     
     if len(sys.argv) == 1:
         interpreter.run(script.split('\n'))

@@ -1,7 +1,7 @@
 import copy
 from enum import Enum
-from env_v2 import EnvironmentManager, SymbolResult
-from func_v2 import FunctionManager
+from env import EnvironmentManager, SymbolResult
+from func import FunctionManager, FuncInfo
 from intbase import InterpreterBase, ErrorType
 from tokenizer import Tokenizer
 
@@ -12,6 +12,7 @@ class Type(Enum):
     STRING = 3
     VOID = 4
     FUNC = 5
+    OBJECT = 6
 
 class Value:
   '''Represents a value, which has a type and its value.'''
@@ -48,9 +49,18 @@ class Interpreter(InterpreterBase):
     self.terminate = False
     self.env_manager = EnvironmentManager()   # used to track variables/scope
 
+    # Set functions as top-level variables
+    for func_name in self.func_manager.func_cache:
+      self.env_manager.create_new_symbol(func_name, create_in_top_block=True)
+      self.env_manager.set(func_name, Value(Type.FUNC, value=func_name))
+    
+    # print(self.env_manager.environment)
+    # print(self.func_manager.func_cache)
     # main interpreter run loop
     while not self.terminate:
+      # print(self.env_manager.environment)
       self._process_line()
+    # print(self.env_manager.environment)
 
   def _process_line(self):
     if self.trace_output:
@@ -84,9 +94,9 @@ class Interpreter(InterpreterBase):
       case InterpreterBase.VAR_DEF: # v2 statements
         self._define_var(args)
       case InterpreterBase.LAMBDA_DEF:
-        pass
+        self._lambda(args)
       case InterpreterBase.ENDLAMBDA_DEF:
-        pass
+        self._endlambda()
       case default:
         raise Exception(f'Unknown command: {tokens[0]}')
 
@@ -94,17 +104,29 @@ class Interpreter(InterpreterBase):
     self._advance_to_next_statement()
 
   def _assign(self, tokens):
-   if len(tokens) < 2:
-     super().error(ErrorType.SYNTAX_ERROR,"Invalid assignment statement")
-   vname = tokens[0]
-   value_type = self._eval_expression(tokens[1:])
-   existing_value_type = self._get_value(tokens[0])
-   if existing_value_type.type() != value_type.type():
-     super().error(ErrorType.TYPE_ERROR,
-                   f"Trying to assign a variable of {existing_value_type.type()} to a value of {value_type.type()}",
-                   self.ip)
-   self._set_value(tokens[0], value_type)
-   self._advance_to_next_statement()
+    if len(tokens) < 2:
+      super().error(ErrorType.SYNTAX_ERROR,"Invalid assignment statement")
+    vname = tokens[0]
+    value_type = self._eval_expression(tokens[1:])
+    existing_value_type = self._get_value(tokens[0])
+    if existing_value_type.type() != value_type.type():
+      super().error(ErrorType.TYPE_ERROR,
+                    f"Trying to assign a variable of {existing_value_type.type()} to a value of {value_type.type()}",
+                    self.ip)
+    # If we are assigning a func type variable to another existing variable, the
+    # contents of that func variable (function info) must be copied in the func_manager.
+    if value_type.type() == Type.FUNC:
+      # print('----', tokens[1], vname)
+      # print(self.func_manager.func_cache)
+      # )
+      # self.func_manager.func_cache[vname] = self.func_manager.func_cache[tokens[1]]
+      if self.func_manager.is_function(tokens[1]):
+        value_type = Value(Type.FUNC, self.func_manager.get_function_info(tokens[1]))
+      elif self.env_manager.is_variable(tokens[1]):
+        value_type = self.env_manager.get(tokens[1])
+
+    self._set_value(tokens[0], value_type)
+    self._advance_to_next_statement()
 
   def _funccall(self, args):
     if not args:
@@ -125,14 +147,20 @@ class Interpreter(InterpreterBase):
 
   def _create_new_environment(self, funcname, args):
     '''Create a new environment for a function call.'''
-    formal_params = self.func_manager.get_function_info(funcname)
+    tmp_mappings = {}
+
+    formal_params = None
+    if self.func_manager.is_function(funcname):
+      formal_params = self.func_manager.get_function_info(funcname)
+    elif self.env_manager.is_variable(funcname):
+      formal_params = self.env_manager.get(funcname).value()
+      tmp_mappings[funcname] = self.env_manager.get(funcname)
     if formal_params is None:
         super().error(ErrorType.NAME_ERROR, f"Unknown function name {funcname}", self.ip)
 
     if len(formal_params.params) != len(args):
       super().error(ErrorType.NAME_ERROR,f"Mismatched parameter count in call to {funcname}", self.ip)
 
-    tmp_mappings = {}
     for formal, actual in zip(formal_params.params,args):
       formal_name = formal[0]
       formal_typename = formal[1]
@@ -149,7 +177,7 @@ class Interpreter(InterpreterBase):
     self.env_manager.push()
     self.env_manager.import_mappings(tmp_mappings)
 
-  def _endfunc(self, return_val = None):
+  def _endfunc(self, return_val=None):
     if not self.return_stack:  # done with main!
       self.terminate = True
     else:
@@ -163,6 +191,24 @@ class Interpreter(InterpreterBase):
         if return_type != InterpreterBase.VOID_DEF:
           self._set_result(self.type_to_default[return_type])
       self.ip = self.return_stack.pop()
+
+  def _lambda(self, args):
+    # TODO: error handling
+    lambda_func = FuncInfo(params=[], start_ip=self.ip + 1)
+    for line_num in range(self.ip + 1, len(self.tokenized_program)):
+      tokens = self.tokenized_program[line_num]
+      if not tokens:
+        continue
+      if tokens[0] == InterpreterBase.ENDLAMBDA_DEF and self.indents[self.ip] == self.indents[line_num]:
+        self.ip = line_num + 1
+        self._set_result(Value(Type.FUNC, lambda_func))
+        return
+      else:
+        pass # for loop to capture all non-parameter variables that are used
+
+  def _endlambda(self, return_val=None):
+    self._endfunc()
+    # self._advance_to_next_statement()
 
   def _if(self, args):
     if not args:
@@ -338,6 +384,7 @@ class Interpreter(InterpreterBase):
     self.type_to_result[Type.STRING] = 's'
     self.type_to_result[Type.BOOL] = 'b'
     self.type_to_result[Type.FUNC] = 'f'
+    self.type_to_result[Type.OBJECT] = 'o'
 
   # run a program, provided in an array of strings, one string per line of source code
   def _setup_operations(self):
@@ -376,7 +423,15 @@ class Interpreter(InterpreterBase):
     self.indents = [len(line) - len(line.lstrip(' ')) for line in program]
 
   def _find_first_instruction(self, funcname):
-    func_info = self.func_manager.get_function_info(funcname)
+    func_info = None
+    if self.func_manager.is_function(funcname):
+      func_info = self.func_manager.get_function_info(funcname)
+    elif self.env_manager.is_variable(funcname):
+      func_info = self.env_manager.get(funcname).value()
+    else:
+      print(f'func_info: {func_info}, funcname: {funcname}')
+      print(self.env_manager.environment)
+    # func_info = self.func_manager.get_function_info(funcname)
     if not func_info:
       super().error(ErrorType.NAME_ERROR,f"Unable to locate {funcname} function")
 

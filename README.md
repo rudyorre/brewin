@@ -1,9 +1,38 @@
 <h1 align="center">Brewin</h1>
 <h4 align="center">An interpretted programming language written fully in Python.</h4>
 
+## Tasks
+- [ ] `func` type variables
+  - [x] Assign `func` variables to existing functions
+  - [ ] Assign `func` variables to lambda functions that are in-scope 
+- [ ] Lambda functions
+  - Implementation: use same scoping rules as scopes like if/endif, and capture all non-parameter variables that are used within that scope. Store
+    - [ ] Make functions that aren't written in the source file able to run druing run-time
+
 ## Previous Versions
 - [Brewin v2](https://github.com/rudyorre/brewin-v2)
 - [Brewin v1](https://github.com/rudyorre/brewin-v1)
+
+## Undefined Behavior
+As this language is in its infancy, there is a lot of undefined behavior, below are some of the more notable ones:
+- Any syntax errors. You can assume that all programs will be syntactically correct.
+- You will never have any nested double quotes inside strings in Brewin++. You may have single quotes inside double quotes.
+- We will never call strtoint on a non-integral value.
+- The program will always have valid indentation.
+- You will never have variables with the same names as reserved keywords, e.g. `func`, `int`, etc.
+  - Note: `lambda`, `this`, and object are new reserved keywords in Brewin#
+- You can assume that we will not manually define a result variable in any of our tests. For example, we will never have the statement var int `resulti` in any of our tests.
+  - This includes `resultf` and `resulto`.
+- We will never call print with arguments of object or function types (a variable or a literal).
+- Different from Project #2, we will always call functions (including lambda functions) with the correct number of arguments that match the definition. Feel free to keep the checking behavior in Project #2.
+- As a result, there is no need to support implicit partial application/currying. We will not test you on this.
+- We will never create a circular object when testing (e.g. x.a = x).
+- Lambda functions can appear in object methods. But you can assume that the lambda functions defined within object method functions do not use or capture the variable “this”.
+- We will not create variables that have the same name of globally-defined functions, or shadow a globally-defined function name with a variable.
+- We will never assign built-in functions to func variables; i.e. we will not test you with `assign f input`, `assign f strtoint`, or `assign f print`
+
+## Garbage Collection
+All of those closures and objects you’re Brewin# programs are creating take up memory.  However, we simply rely upon Python’s garbage collection to free up discarded objects for us. There’s no need to build own garbage collector.
 
 Hey there! This is a template repository that contains the necessary boilerplate for [CS 131](https://ucla-cs-131.github.io/fall-22/)'s quarter-long project: making an interpreter. The project specs are as follows:
 

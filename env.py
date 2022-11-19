@@ -4,16 +4,18 @@ class SymbolResult(Enum):
   OK = 0     # symbol created, didn't exist in top scope
   ERROR = 1  # symbol already exists in top scope
 
-# An improved version of the EnvironmentManager that can manage a separate environment for
-# each function as it executes, and has handling for nested blocks within functions
-# (so variables can go out of scope once a block enters/exits).
-# The internal data structure is essentially a stack (via a python list) of environments
-# where each environment on the stack is a list of one or more dictionaries that map a
-# variable name to a type/value. We need more than one dictionary to accomodate nested
-# blocks in functions.
-# If f() calls g() calls h() then while we're in function h, our stack would have
-# three items on it: [[{dictionary for f}],[{dictionary for g}][{dictionary for h}]]
 class EnvironmentManager:
+  '''
+  An improved version of the EnvironmentManager that can manage a separate environment for
+  each function as it executes, and has handling for nested blocks within functions
+  (so variables can go out of scope once a block enters/exits).
+  The internal data structure is essentially a stack (via a python list) of environments
+  where each environment on the stack is a list of one or more dictionaries that map a
+  variable name to a type/value. We need more than one dictionary to accomodate nested
+  blocks in functions.
+  If f() calls g() calls h() then while we're in function h, our stack would have
+  three items on it: [[{dictionary for f}],[{dictionary for g}][{dictionary for h}]]
+  '''
   def __init__(self):
     self.environment = [[{}]]
 
@@ -25,9 +27,16 @@ class EnvironmentManager:
 
     return None
 
+  def is_variable(self, symbol):
+    nested_envs = self.environment[-1]
+    for env in reversed(nested_envs):
+      if symbol in env:
+        return True
+    return False
+
   # create a new symbol in the most nested block's environment; error if
   # the symbol already exists
-  def create_new_symbol(self, symbol, create_in_top_block = False):
+  def create_new_symbol(self, symbol: str, create_in_top_block=False):
     block_index = 0 if create_in_top_block else -1
     if symbol not in self.environment[-1][block_index]:
       self.environment[-1][block_index][symbol] = None
