@@ -56,6 +56,10 @@ class FunctionManager:
         self.func_cache[func_name] = func_info
         return_type_stack.append(line[-1])
 
+      if line and line[0] == InterpreterBase.LAMBDA_DEF:
+        # TODO: potentially add parameter stuff for lambda functions here instead of interpreterv3.py
+        return_type_stack.append(line[-1])
+
       if line and line[0] == InterpreterBase.ENDFUNC_DEF:
         reset_after_this_line = True
 

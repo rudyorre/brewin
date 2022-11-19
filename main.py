@@ -26,12 +26,14 @@ func create_lambda_2 func
 endfunc
 
 func main void
-    lambda x:string y:int int
+    lambda x:string y:int string
         funccall print "Hello " x ", you are " y " years old now?"
+        return "Deez nuts"
     endlambda
 
     funccall resultf "Rudy" 22
-    funccall resultf "Cody" 18
+
+    funccall print results
 
 
     # funccall print resulti # prints 52
