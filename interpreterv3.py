@@ -174,7 +174,7 @@ class Interpreter(InterpreterBase):
 
     for (var, var_type, var_name) in formal_params.captured_variables:
       if self.env_manager.is_variable(var_name):
-        tmp_mappings[var_name] = self.env_manager.get(var_name)
+        tmp_mappings[var_name] = copy.copy(self.env_manager.get(var_name))
       else:
         tmp_mappings[var_name] = var
 

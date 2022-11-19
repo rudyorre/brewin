@@ -8,29 +8,21 @@ import interpreterv3 as brewin
 import sys
 
 script = '''
-func create_lambda x:int func
-  lambda y:int int     # defines a lambda/closure and stores in resultf
-    var int z
-    assign z + x y
-    return z
-  endlambda
-
-  return resultf       # return our lambda/closure
+func creator x:refint func
+    lambda int
+        assign x + x 1
+        return x
+    endlambda
+    return resultf
 endfunc
 
 func main void
-  var func f g
-  funccall create_lambda 10   # create a lambda that captures x=10
-  assign f resultf            # f holds our lambda's closure
- 
-  funccall create_lambda 100  # create a lambda that captures x=100
-  assign g resultf            # f holds our lambda's closure
-
-  funccall f 42
-  funccall print resulti      # prints 52
-
-  funccall g 42
-  funccall print resulti      # prints 142
+    var int a
+    assign a 2
+    funccall creator a   # Creates a first closure
+    funccall resultf
+    funccall creator a   # Creates a second closure
+    funccall resultf     # This is valid
 endfunc
 '''
 
