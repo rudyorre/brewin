@@ -1,7 +1,0 @@
-func foo void
- return 5
-endfunc
-
-func main void
- funccall foo
-endfunc

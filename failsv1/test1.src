@@ -1,4 +1,0 @@
-func main
- assign v1 + 20 True
- funccall print v1
-endfunc

@@ -1,8 +1,0 @@
-func main void
- var int a
- var string b
- var bool c
- if & & == a 0 == b "" == c False
-  funccall print "good"
- endif
-endfunc

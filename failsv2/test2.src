@@ -1,6 +1,0 @@
-func fact n:int int
-endfunc
-
-func main void
-  funccall fact 3 4
-endfunc

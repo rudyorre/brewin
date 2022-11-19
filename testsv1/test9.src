@@ -1,5 +1,0 @@
-func main
-  assign a -1
-  assign b - a -10
-  funccall print a " " b
-endfunc

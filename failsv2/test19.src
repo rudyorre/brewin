@@ -1,5 +1,0 @@
-func main void
-  var int a
-  assign a 42
-  var string a # this is illegal!
-endfunc

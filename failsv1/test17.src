@@ -1,7 +1,0 @@
-#name error -- undefined function
-func main
-    funccall maiN
-endfunc
-
-func mai#N
-endfunc

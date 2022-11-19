@@ -1,5 +1,0 @@
-func main
-  while 5
-    assign a 5
-  endwhile
-endfunc

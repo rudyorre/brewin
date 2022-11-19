@@ -1,3 +1,0 @@
-func main
-  assign a + "abc" False
-endfunc

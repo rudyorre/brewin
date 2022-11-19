@@ -1,4 +1,0 @@
-func main void
-  var object a b
-  return + a b
-endfunc

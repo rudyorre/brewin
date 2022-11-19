@@ -1,7 +1,0 @@
-#name error -- undefined function
-func main void
-    funccall maiN
-endfunc
-
-func mai void #N void
-endfunc

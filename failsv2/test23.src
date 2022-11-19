@@ -1,4 +1,0 @@
-func main void
-  var int a
-  assign a + 5 "abc"
-endfunc

@@ -1,4 +1,0 @@
-func main void
-  var string a
-  assign a + "abc" False
-endfunc

@@ -1,4 +1,0 @@
-func main void
-  funccall input "Enter a name: "
-  funccall print "Hello, " results
-endfunc

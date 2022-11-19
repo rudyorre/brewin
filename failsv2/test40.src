@@ -1,6 +1,0 @@
-# refer to an undefined variable
-
-func main void
-  var int x
-  assign y x
-endfunc
