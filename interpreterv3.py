@@ -195,6 +195,13 @@ class Interpreter(InterpreterBase):
   def _lambda(self, args):
     # TODO: error handling
     lambda_func = FuncInfo(params=[], start_ip=self.ip + 1)
+    # Get parameters
+    for token in args[:-1]:
+      var_name, type_name = token.split(':')
+      lambda_func.params.append((var_name, type_name))
+    # Get return type
+    lambda_func.return_type = args[-1]
+    
     for line_num in range(self.ip + 1, len(self.tokenized_program)):
       tokens = self.tokenized_program[line_num]
       if not tokens:

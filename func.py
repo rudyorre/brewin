@@ -4,7 +4,9 @@ class FuncInfo:
   def __init__(self, params, start_ip):
     self.params = params  # format is [[varname1,typename1],[varname2,typename2],...]
     self.start_ip = start_ip    # line number, zero-based
+    # For lambdas only:
     self.code = None
+    self.return_type = None
 
   def capture(self, tokenized_function):
     self.code = tokenized_function
