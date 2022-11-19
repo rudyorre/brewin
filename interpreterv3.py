@@ -215,10 +215,6 @@ class Interpreter(InterpreterBase):
       if tokens[0] == InterpreterBase.ENDLAMBDA_DEF and self.indents[self.ip] == self.indents[line_num]:
         self.ip = line_num + 1
         self._set_result(Value(Type.FUNC, lambda_func))
-        print('lambda function:')
-        print(' params:', lambda_func.params)
-        print(' return:', lambda_func.return_type)
-        print(' captur:', lambda_func.captured_variables)
         return
       else:
         # for loop to capture all non-parameter variables that are used

@@ -9,37 +9,28 @@ import sys
 
 script = '''
 func create_lambda x:int func
-    lambda y:int int # defines a lambda/closure and stores in resultf
-        var int z
-        assign z + x y
-        return z
-    endlambda
-    funccall print "Hello"
-    return resultf # return lambda/closure
-endfunc
+  lambda y:int int     # defines a lambda/closure and stores in resultf
+    var int z
+    assign z + x y
+    return z
+  endlambda
 
-func create_lambda_2 func
-    lambda void
-        funccall print "Hello World!"
-    endlambda
-    return resultf
+  return resultf       # return our lambda/closure
 endfunc
 
 func main void
-    var string z
-    assign z "deez"
+  var func f g
+  funccall create_lambda 10   # create a lambda that captures x=10
+  assign f resultf            # f holds our lambda's closure
+ 
+  funccall create_lambda 100  # create a lambda that captures x=100
+  assign g resultf            # f holds our lambda's closure
 
-    lambda x:string y:int string
-        funccall print z " Hello " x ", you are " y " years old now?"
-        return "Deez nuts"
-    endlambda
+  funccall f 42
+  funccall print resulti      # prints 52
 
-    funccall resultf "Rudy" 22
-
-    funccall print results
-
-
-    # funccall print resulti # prints 52
+  funccall g 42
+  funccall print resulti      # prints 142
 endfunc
 '''
 
