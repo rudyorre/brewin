@@ -222,9 +222,6 @@ class Interpreter(InterpreterBase):
           if self.env_manager.is_variable(token):
             var = self.env_manager.get(token)
             lambda_func.captured_variables.append((copy.copy(var), var.type(), token))
-    
-    
-
 
   def _endlambda(self, return_val=None):
     self._endfunc()
@@ -385,7 +382,7 @@ class Interpreter(InterpreterBase):
     self.type_to_default[InterpreterBase.STRING_DEF] = Value(Type.STRING, '')
     self.type_to_default[InterpreterBase.BOOL_DEF] = Value(Type.BOOL, False)
     self.type_to_default[InterpreterBase.VOID_DEF] = Value(Type.VOID, None)
-    self.type_to_default[InterpreterBase.FUNC_DEF] = Value(Type.FUNC, None)
+    self.type_to_default[InterpreterBase.FUNC_DEF] = Value(Type.FUNC, FuncInfo([], start_ip=None))
 
     # set up what types are compatible with what other types
     self.compatible_types = {}
@@ -454,6 +451,10 @@ class Interpreter(InterpreterBase):
     # func_info = self.func_manager.get_function_info(funcname)
     if not func_info:
       super().error(ErrorType.NAME_ERROR,f"Unable to locate {funcname} function")
+
+    if func_info.start_ip == None:
+      self._endfunc()
+      return self.ip
 
     return func_info.start_ip
 

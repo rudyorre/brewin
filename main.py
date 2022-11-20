@@ -8,22 +8,34 @@ import interpreterv3 as brewin
 import sys
 
 script = '''
-func creator x:refint func
-    lambda int
-        assign x + x 1
-        return x
+func main void
+    var func a b c
+    funccall a
+    funccall print "hello1"
+    funccall print "hello2"
+    funccall c
+    funccall print "hello3"
+
+    lambda x:int y:int z:int bool
+        if == x y
+            if == y z
+                return True
+            endif
+        endif
+        return False
     endlambda
-    return resultf
+
+    assign a resultf
+    funccall a 1 2 3
+    funccall print resultb
+
+    assign b resultf
+    funccall b 1 1 1
+    funccall print resultb
+
+    
 endfunc
 
-func main void
-    var int a
-    assign a 2
-    funccall creator a   # Creates a first closure
-    funccall resultf
-    funccall creator a   # Creates a second closure
-    funccall resultf     # This is valid
-endfunc
 '''
 
 def main():
