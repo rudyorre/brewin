@@ -153,15 +153,16 @@ class Interpreter(InterpreterBase):
     if self.func_manager.is_function(funcname):
       formal_params = self.func_manager.get_function_info(funcname)
     elif self.env_manager.is_variable(funcname):
-      formal_params = self.env_manager.get(funcname).value()
-      tmp_mappings[funcname] = self.env_manager.get(funcname)
+      env_func = self.env_manager.get(funcname)
+      formal_params = env_func.value()
+      tmp_mappings[funcname] = env_func
     if formal_params is None:
         super().error(ErrorType.NAME_ERROR, f"Unknown function name {funcname}", self.ip)
 
     if len(formal_params.params) != len(args):
       super().error(ErrorType.NAME_ERROR,f"Mismatched parameter count in call to {funcname}", self.ip)
 
-    for formal, actual in zip(formal_params.params,args):
+    for formal, actual in zip(formal_params.params, args):
       formal_name = formal[0]
       formal_typename = formal[1]
       arg = self._get_value(actual)
@@ -170,6 +171,11 @@ class Interpreter(InterpreterBase):
       if formal_typename in self.reference_types:
         tmp_mappings[formal_name] = arg
       else:
+        if arg.type() == Type.FUNC:
+          if self.func_manager.is_function(actual):
+            arg.v = self.func_manager.get_function_info(actual)
+          else:
+            arg.v = self.env_manager.get(actual)
         tmp_mappings[formal_name] = copy.copy(arg)
 
     for (var, var_type, var_name) in formal_params.captured_variables:
@@ -392,6 +398,7 @@ class Interpreter(InterpreterBase):
     self.compatible_types[InterpreterBase.REFINT_DEF] = Type.INT
     self.compatible_types[InterpreterBase.REFSTRING_DEF] = Type.STRING
     self.compatible_types[InterpreterBase.REFBOOL_DEF] = Type.BOOL
+    self.compatible_types[InterpreterBase.FUNC_DEF] = Type.FUNC
     self.reference_types = {InterpreterBase.REFINT_DEF, Interpreter.REFSTRING_DEF,
                             Interpreter.REFBOOL_DEF}
 

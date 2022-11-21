@@ -8,34 +8,17 @@ import interpreterv3 as brewin
 import sys
 
 script = '''
-func main void
-    var func a b c
-    funccall a
-    funccall print "hello1"
-    funccall print "hello2"
-    funccall c
-    funccall print "hello3"
-
-    lambda x:int y:int z:int bool
-        if == x y
-            if == y z
-                return True
-            endif
-        endif
-        return False
-    endlambda
-
-    assign a resultf
-    funccall a 1 2 3
-    funccall print resultb
-
-    assign b resultf
-    funccall b 1 1 1
-    funccall print resultb
-
-    
+func takes_a_function f:func void
+    funccall f 10
 endfunc
 
+func foo x:int void
+    funccall print x
+endfunc
+
+func main void
+    funccall takes_a_function foo
+endfunc
 '''
 
 def main():
