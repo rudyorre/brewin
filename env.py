@@ -22,16 +22,26 @@ class EnvironmentManager:
   def get(self, symbol):
     nested_envs = self.environment[-1]
     for env in reversed(nested_envs):
-      if symbol in env:
-        return env[symbol]
+      if self.is_member(symbol):
+        obj, mem = symbol.split('.')
+        if obj in env:
+          return env[obj].value()[mem]
+      else:
+        if symbol in env:
+          return env[symbol]
 
     return None
 
   def is_variable(self, symbol):
     nested_envs = self.environment[-1]
     for env in reversed(nested_envs):
-      if symbol in env:
-        return True
+      if self.is_member(symbol):
+        obj, mem = symbol.split('.')
+        if obj in env and mem in env[obj].value():
+          return True
+      else:
+        if symbol in env:
+          return True
     return False
 
   # create a new symbol in the most nested block's environment; error if
@@ -45,15 +55,24 @@ class EnvironmentManager:
     return SymbolResult.ERROR
 
   def create_new_member_symbol(self, symbol: str):
+    '''
+    Given a symbol s thats a member of object o, will update o's dictionary to reflect s.
+    '''
     nested_envs = self.environment[-1]
-    object_symbol = symbol.split('.')[0]
+    object_symbol, member_symbol = symbol.split('.')
     for env in reversed(nested_envs):
       if object_symbol in env:
-        env[symbol] = None
+        env[object_symbol].value()[member_symbol] = None
         return SymbolResult.OK
-
-    # Object x in x.a doesn't exist within scope
+    # Object o in o.s doesn't exist within scope
     return SymbolResult.ERROR
+
+  def is_member(self, varname: str):
+    '''
+    Checks if a varname is a member of an object by checking if it
+    has the dot notation and if the object exists within scope.
+    '''
+    return len(varname.split('.')) == 2 and self.is_variable(varname.split('.')[0])
 
   def get_members(self, symbol: str):
     nested_envs = self.environment[-1]
@@ -63,17 +82,21 @@ class EnvironmentManager:
         if len(key.split('.')) == 2 and key.split('.')[0] == symbol and key not in members:
           members.add(key)
     return list(members)
-        
 
   # set works with symbols that were already created
   # it won't create a new symbol, only update it
   def set(self, symbol, value):
     nested_envs = self.environment[-1]
-
     for env in reversed(nested_envs):
-      if symbol in env:
-        env[symbol] = value
-        return SymbolResult.OK
+      if self.is_member(symbol):
+        obj, mem = symbol.split('.')
+        if obj in env:
+          env[obj].value()[mem] = value
+          return SymbolResult.OK
+      else:
+        if symbol in env:
+          env[symbol] = value
+          return SymbolResult.OK
 
     return SymbolResult.ERROR
 

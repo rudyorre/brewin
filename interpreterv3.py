@@ -111,12 +111,20 @@ class Interpreter(InterpreterBase):
       super().error(ErrorType.SYNTAX_ERROR,"Invalid assignment statement")
     vname = tokens[0]
     value_type = self._eval_expression(tokens[1:])
-    if not self._is_member(tokens[0]):
-      existing_value_type = self._get_value(tokens[0])
-      if existing_value_type.type() != value_type.type():
-        super().error(ErrorType.TYPE_ERROR,
-                      f"Trying to assign a variable of {existing_value_type.type()} to a value of {value_type.type()}",
-                      self.ip)
+
+    # Check if a member of an object
+    if self._is_member(vname):
+      # Create object in env_manager
+      # print(self.env_manager.environment[-1][0]['o'].v)
+      # quit()
+      self.env_manager.create_new_member_symbol(vname)
+      self.env_manager.set(vname, value_type)
+
+    existing_value_type = self._get_value(tokens[0])
+    if existing_value_type.type() != value_type.type():
+      super().error(ErrorType.TYPE_ERROR,
+                    f"Trying to assign a variable of {existing_value_type.type()} to a value of {value_type.type()}",
+                    self.ip)
     # If we are assigning a func type variable to another existing variable, the
     # contents of that func variable (function info) must be copied in the func_manager.
     if value_type.type() == Type.FUNC:
@@ -133,6 +141,10 @@ class Interpreter(InterpreterBase):
     self._advance_to_next_statement()
 
   def _is_member(self, varname):
+    '''
+    Checks if a varname is a member of an object by checking if it
+    has the dot notation and if the object exists within scope.
+    '''
     return len(varname.split('.')) == 2 and self.env_manager.is_variable(varname.split('.')[0])
 
   def _funccall(self, args):
@@ -174,8 +186,10 @@ class Interpreter(InterpreterBase):
       # Push member variables/methods (replacing object name with `this`)
       members = self.env_manager.get_members(funcname.split('.')[0])
       for member in members:
-        tmp_mappings[InterpreterBase.THIS_DEF + '.' + member.split('.')[1]] = self.env_manager.get(member)
+        pass # tmp_mappings[InterpreterBase.THIS_DEF + '.' + member.split('.')[1]] = self.env_manager.get(member)
       # Push object itself as `this`
+      # tmp_mappings[InterpreterBase.THIS_DEF] = self.env_manager.get(funcname.split('.')[0])
+
       tmp_mappings[InterpreterBase.THIS_DEF] = self.env_manager.get(funcname.split('.')[0])
 
     # For lambdas, push captured variables into new environment
@@ -433,7 +447,7 @@ class Interpreter(InterpreterBase):
     self.type_to_default[InterpreterBase.BOOL_DEF] = Value(Type.BOOL, False)
     self.type_to_default[InterpreterBase.VOID_DEF] = Value(Type.VOID, None)
     self.type_to_default[InterpreterBase.FUNC_DEF] = Value(Type.FUNC, FuncInfo([], start_ip=None))
-    self.type_to_default[InterpreterBase.OBJECT_DEF] = Value(Type.OBJECT, None) # TODO: object default value?
+    self.type_to_default[InterpreterBase.OBJECT_DEF] = Value(Type.OBJECT, dict()) # TODO: object default value?
 
     # set up what types are compatible with what other types
     self.compatible_types = {}
@@ -511,8 +525,11 @@ class Interpreter(InterpreterBase):
 
     return func_info.start_ip
 
-  # given a token name (e.g., x, 17, True, "foo"), give us a Value object associated with it
   def _get_value(self, token):
+    '''
+    Given a token name (e.g., x, 17, True, "foo"), give us a Value object associated
+    with it.
+    '''
     if not token:
       super().error(ErrorType.NAME_ERROR,f"Empty token", self.ip)
     if token[0] == '"':
