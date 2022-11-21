@@ -1,14 +1,6 @@
 <h1 align="center">Brewin</h1>
 <h4 align="center">An interpretted programming language written fully in Python.</h4>
 
-## Tasks
-- [ ] `func` type variables
-  - [x] Assign `func` variables to existing functions
-  - [ ] Assign `func` variables to lambda functions that are in-scope 
-- [ ] Lambda functions
-  - Implementation: use same scoping rules as scopes like if/endif, and capture all non-parameter variables that are used within that scope. Store
-    - [ ] Make functions that aren't written in the source file able to run druing run-time
-
 ## Previous Versions
 - [Brewin v2](https://github.com/rudyorre/brewin-v2)
 - [Brewin v1](https://github.com/rudyorre/brewin-v1)

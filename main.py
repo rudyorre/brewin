@@ -8,22 +8,16 @@ import interpreterv3 as brewin
 import sys
 
 script = '''
-func takes_a_function f:func void
-    funccall f 10
-endfunc
-
-func foo x:int void
-    funccall print x
+func foo i:int void
+  assign this.val i    # sets the val member of the passed-in object
 endfunc
 
 func main void
-    funccall takes_a_function foo
+  var object x    
+  assign x.our_method foo      # sets x.our_method to foo()
 
-    lambda x:int void
-        funccall print x
-    endlambda
-
-    funccall takes_a_function resultf
+  funccall x.our_method 42     # calls foo(42)
+  funccall print x.val         # prints 42
 endfunc
 '''
 

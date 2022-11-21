@@ -58,9 +58,11 @@ class Interpreter(InterpreterBase):
     # print(self.func_manager.func_cache)
     # main interpreter run loop
     while not self.terminate:
+      # print()
       # print(self.env_manager.environment)
       self._process_line()
-    # print(self.env_manager.environment)
+      # if 'resultf' in self.env_manager.environment[-1][-1]:
+      #   print('line:', self.env_manager.environment[-1][0]['resultf'].v.start_ip)
 
   def _process_line(self):
     if self.trace_output:
@@ -108,11 +110,12 @@ class Interpreter(InterpreterBase):
       super().error(ErrorType.SYNTAX_ERROR,"Invalid assignment statement")
     vname = tokens[0]
     value_type = self._eval_expression(tokens[1:])
-    existing_value_type = self._get_value(tokens[0])
-    if existing_value_type.type() != value_type.type():
-      super().error(ErrorType.TYPE_ERROR,
-                    f"Trying to assign a variable of {existing_value_type.type()} to a value of {value_type.type()}",
-                    self.ip)
+    if not self._is_member(tokens[0]):
+      existing_value_type = self._get_value(tokens[0])
+      if existing_value_type.type() != value_type.type():
+        super().error(ErrorType.TYPE_ERROR,
+                      f"Trying to assign a variable of {existing_value_type.type()} to a value of {value_type.type()}",
+                      self.ip)
     # If we are assigning a func type variable to another existing variable, the
     # contents of that func variable (function info) must be copied in the func_manager.
     if value_type.type() == Type.FUNC:
@@ -127,6 +130,9 @@ class Interpreter(InterpreterBase):
 
     self._set_value(tokens[0], value_type)
     self._advance_to_next_statement()
+
+  def _is_member(self, varname):
+    return len(varname.split('.')) == 2 and self.env_manager.is_variable(varname.split('.')[0])
 
   def _funccall(self, args):
     if not args:
@@ -162,6 +168,19 @@ class Interpreter(InterpreterBase):
     if len(formal_params.params) != len(args):
       super().error(ErrorType.NAME_ERROR,f"Mismatched parameter count in call to {funcname}", self.ip)
 
+    # if function is a method of an object
+    if self._is_member(funcname):
+      members = self.env_manager.get_members(funcname.split('.')[0])
+      for member in members:
+        tmp_mappings[InterpreterBase.THIS_DEF + '.' + member.split('.')[1]] = self.env_manager.get(member)
+        # print(InterpreterBase.THIS_DEF + '.' + member.split('.')[1], tmp_mappings[InterpreterBase.THIS_DEF + '.' + member])
+
+    for (var, var_type, var_name) in formal_params.captured_variables:
+      if self.env_manager.is_variable(var_name):
+        tmp_mappings[var_name] = copy.copy(self.env_manager.get(var_name))
+      else:
+        tmp_mappings[var_name] = var
+
     for formal, actual in zip(formal_params.params, args):
       formal_name = formal[0]
       formal_typename = formal[1]
@@ -178,11 +197,7 @@ class Interpreter(InterpreterBase):
             arg.v = self.env_manager.get(actual).v
         tmp_mappings[formal_name] = copy.copy(arg)
 
-    for (var, var_type, var_name) in formal_params.captured_variables:
-      if self.env_manager.is_variable(var_name):
-        tmp_mappings[var_name] = copy.copy(self.env_manager.get(var_name))
-      else:
-        tmp_mappings[var_name] = var
+    
 
     # create a new environment for the target function
     # and add our parameters to the env
@@ -201,6 +216,7 @@ class Interpreter(InterpreterBase):
         # creation of result variable even if none exists, or is of a different type
         return_type = self.func_manager.get_return_type_for_enclosing_function(self.ip)
         if return_type != InterpreterBase.VOID_DEF:
+          # print('hello:', return_type, self.ip)
           self._set_result(self.type_to_default[return_type])
       self.ip = self.return_stack.pop()
 
@@ -214,6 +230,13 @@ class Interpreter(InterpreterBase):
     # Get return type
     lambda_func.return_type = args[-1]
 
+    # Dictionary of variables that are used in lambda
+    # but are instantiated during the runtime of lambda function.
+    new_vars = set()
+
+    # Count how many layers deep we are with nested lambdas within this one.
+    depth = 0
+
     for line_num in range(self.ip + 1, len(self.tokenized_program)):
       tokens = self.tokenized_program[line_num]
       if not tokens:
@@ -222,10 +245,13 @@ class Interpreter(InterpreterBase):
         self.ip = line_num + 1
         self._set_result(Value(Type.FUNC, lambda_func))
         return
+      # elif tokens[0] == InterpreterBase.VAR_DEF:
+      #   for token in tokens[2:]:
+      #     new_vars.add(token)
       else:
         # for loop to capture all non-parameter variables that are used
         for token in tokens:
-          if self.env_manager.is_variable(token):
+          if self.env_manager.is_variable(token): #  and token not in new_vars:
             var = self.env_manager.get(token)
             lambda_func.captured_variables.append((copy.copy(var), var.type(), token))
 
@@ -389,6 +415,7 @@ class Interpreter(InterpreterBase):
     self.type_to_default[InterpreterBase.BOOL_DEF] = Value(Type.BOOL, False)
     self.type_to_default[InterpreterBase.VOID_DEF] = Value(Type.VOID, None)
     self.type_to_default[InterpreterBase.FUNC_DEF] = Value(Type.FUNC, FuncInfo([], start_ip=None))
+    self.type_to_default[InterpreterBase.OBJECT_DEF] = Value(Type.OBJECT, None) # TODO: object default value?
 
     # set up what types are compatible with what other types
     self.compatible_types = {}
@@ -484,7 +511,12 @@ class Interpreter(InterpreterBase):
     super().error(ErrorType.NAME_ERROR,f"Unknown variable {token}", self.ip)
 
   # given a variable name and a Value object, associate the name with the value
-  def _set_value(self, varname, to_value_type):
+  def _set_value(self, varname: str, to_value_type: Value):
+    if self._is_member(varname):
+      # If a member variable of an object
+      self.env_manager.create_new_member_symbol(varname)
+      self.env_manager.set(varname, to_value_type)
+    
     value_type = self.env_manager.get(varname)
     if value_type == None:
       super().error(ErrorType.NAME_ERROR,f"Assignment of unknown variable {varname}", self.ip)

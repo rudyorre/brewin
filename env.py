@@ -44,6 +44,27 @@ class EnvironmentManager:
 
     return SymbolResult.ERROR
 
+  def create_new_member_symbol(self, symbol: str):
+    nested_envs = self.environment[-1]
+    object_symbol = symbol.split('.')[0]
+    for env in reversed(nested_envs):
+      if object_symbol in env:
+        env[symbol] = None
+        return SymbolResult.OK
+
+    # Object x in x.a doesn't exist within scope
+    return SymbolResult.ERROR
+
+  def get_members(self, symbol: str):
+    nested_envs = self.environment[-1]
+    members = set()
+    for env in nested_envs: # we aren't reversing because later instances of the same variable are more valid
+      for key in env:
+        if len(key.split('.')) == 2 and key.split('.')[0] == symbol and key not in members:
+          members.add(key)
+    return list(members)
+        
+
   # set works with symbols that were already created
   # it won't create a new symbol, only update it
   def set(self, symbol, value):
