@@ -59,10 +59,11 @@ class Interpreter(InterpreterBase):
     # main interpreter run loop
     while not self.terminate:
       # print()
-      # print(self.env_manager.environment)
+      # print(self.env_manager.environment[-1])
       self._process_line()
       # if 'resultf' in self.env_manager.environment[-1][-1]:
       #   print('line:', self.env_manager.environment[-1][0]['resultf'].v.start_ip)
+
 
   def _process_line(self):
     if self.trace_output:
@@ -170,17 +171,22 @@ class Interpreter(InterpreterBase):
 
     # if function is a method of an object
     if self._is_member(funcname):
+      # Push member variables/methods (replacing object name with `this`)
       members = self.env_manager.get_members(funcname.split('.')[0])
       for member in members:
         tmp_mappings[InterpreterBase.THIS_DEF + '.' + member.split('.')[1]] = self.env_manager.get(member)
-        # print(InterpreterBase.THIS_DEF + '.' + member.split('.')[1], tmp_mappings[InterpreterBase.THIS_DEF + '.' + member])
+      # Push object itself as `this`
+      tmp_mappings[InterpreterBase.THIS_DEF] = self.env_manager.get(funcname.split('.')[0])
 
+    # For lambdas, push captured variables into new environment
     for (var, var_type, var_name) in formal_params.captured_variables:
       if self.env_manager.is_variable(var_name):
         tmp_mappings[var_name] = copy.copy(self.env_manager.get(var_name))
       else:
         tmp_mappings[var_name] = var
 
+    # Push the parameters (after captured variables because parameters
+    # will take precedent and will overwrite the captured variables w/ same symbols).
     for formal, actual in zip(formal_params.params, args):
       formal_name = formal[0]
       formal_typename = formal[1]
@@ -197,8 +203,6 @@ class Interpreter(InterpreterBase):
             arg.v = self.env_manager.get(actual).v
         tmp_mappings[formal_name] = copy.copy(arg)
 
-    
-
     # create a new environment for the target function
     # and add our parameters to the env
     self.env_manager.push()
@@ -208,7 +212,21 @@ class Interpreter(InterpreterBase):
     if not self.return_stack:  # done with main!
       self.terminate = True
     else:
-      self.env_manager.pop()  # get rid of environment for the function
+      # Find name of this function
+      # print(self.env_manager.environment[-1][0])
+      # print('x' in self.env_manager.environment[-2][0])
+      if InterpreterBase.THIS_DEF in self.env_manager.environment[-1][0]:
+        this_object = self.env_manager.environment[-1][0][InterpreterBase.THIS_DEF]
+        this_name = None
+        for (key, value) in self.env_manager.environment[-2][0].items():
+          if value is this_object:
+            this_name = key
+        for (key, value) in self.env_manager.environment[-1][0].items():
+          if len(key) > len(InterpreterBase.THIS_DEF) and key[:len(InterpreterBase.THIS_DEF)] == InterpreterBase.THIS_DEF:
+            self.env_manager.environment[-2][0][this_name + '.' + key.split('.')[1]] = value
+
+      # Get rid of environment for the function
+      self.env_manager.pop()  
       if return_val:
         self._set_result(return_val)
       else:
@@ -426,6 +444,7 @@ class Interpreter(InterpreterBase):
     self.compatible_types[InterpreterBase.REFSTRING_DEF] = Type.STRING
     self.compatible_types[InterpreterBase.REFBOOL_DEF] = Type.BOOL
     self.compatible_types[InterpreterBase.FUNC_DEF] = Type.FUNC
+    self.compatible_types[InterpreterBase.OBJECT_DEF] = Type.OBJECT
     self.reference_types = {InterpreterBase.REFINT_DEF, Interpreter.REFSTRING_DEF,
                             Interpreter.REFBOOL_DEF}
 

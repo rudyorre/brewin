@@ -8,16 +8,16 @@ import interpreterv3 as brewin
 import sys
 
 script = '''
-func foo i:int void
-  assign this.val i    # sets the val member of the passed-in object
+func takes_a_function f:func void
+  funccall f 10
+endfunc
+
+func foo x:int void
+  funccall print x
 endfunc
 
 func main void
-  var object x    
-  assign x.our_method foo      # sets x.our_method to foo()
-
-  funccall x.our_method 42     # calls foo(42)
-  funccall print x.val         # prints 42
+  funccall takes_a_function foo
 endfunc
 '''
 
