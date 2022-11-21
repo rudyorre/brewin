@@ -8,19 +8,11 @@ import interpreterv3 as brewin
 import sys
 
 script = '''
-func foo i:int void
-    assign this.val i
-endfunc
-
-func main void
-    lambda i:int void
-        assign this.val + i 1
-    endlambda
-
-    var object x
-    assign x.our_method resultf
-    funccall x.our_method 42
-    funccall print x.val
+func main void  
+  var object x
+  assign x.a 10
+  assign x.b “salamander”
+  funccall print x.a " " x.b
 endfunc
 '''
 
@@ -36,4 +28,4 @@ def main():
         # file.close()
 
 if __name__ == '__main__':
-    main()  
+    main()

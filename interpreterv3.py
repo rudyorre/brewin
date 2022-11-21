@@ -543,6 +543,12 @@ class Interpreter(InterpreterBase):
     val = self.env_manager.get(token)
     if val != None:
       return val
+
+    # look in func manager for variable
+    val = Value(Type.FUNC, self.func_manager.get_function_info(token))
+    if val != None:
+        return val
+    
     # not found
     super().error(ErrorType.NAME_ERROR,f"Unknown variable {token}", self.ip)
 
