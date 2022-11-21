@@ -18,6 +18,12 @@ endfunc
 
 func main void
     funccall takes_a_function foo
+
+    lambda x:int void
+        funccall print x
+    endlambda
+
+    funccall takes_a_function resultf
 endfunc
 '''
 

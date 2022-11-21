@@ -175,7 +175,7 @@ class Interpreter(InterpreterBase):
           if self.func_manager.is_function(actual):
             arg.v = self.func_manager.get_function_info(actual)
           else:
-            arg.v = self.env_manager.get(actual)
+            arg.v = self.env_manager.get(actual).v
         tmp_mappings[formal_name] = copy.copy(arg)
 
     for (var, var_type, var_name) in formal_params.captured_variables:
