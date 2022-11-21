@@ -540,9 +540,8 @@ class Interpreter(InterpreterBase):
       return Value(Type.BOOL, token == InterpreterBase.TRUE_DEF)
 
     # look in environments for variable
-    val = self.env_manager.get(token)
-    if val != None:
-      return val
+    if self.env_manager.is_variable(token):
+      return self.env_manager.get(token)
 
     # look in func manager for variable
     if self.func_manager.is_function(token):
