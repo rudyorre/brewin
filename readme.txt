@@ -57,3 +57,20 @@ func main void
     # funccall print resulti
 endfunc
 ```
+
+Make the error here valid:
+```
+func print_list void
+
+endfunc
+
+func main void
+    var object l1 l2 l3
+    var object test
+    assign l1.val 13
+    funccall print l3.val
+
+    # var object l4
+    # funccall print l4.val
+endfunc
+```

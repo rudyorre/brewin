@@ -62,8 +62,7 @@ class Interpreter(InterpreterBase):
       # print(self.env_manager.environment[-1])
       self._process_line()
       # if 'resultf' in self.env_manager.environment[-1][-1]:
-      #   print('line:', self.env_manager.environment[-1][0]['resultf'].v.start_ip)
-
+      #   print('line:', self.env_manager.environment[-1][0]['resultf'].v.start_ip
 
   def _process_line(self):
     if self.trace_output:
@@ -116,7 +115,7 @@ class Interpreter(InterpreterBase):
     if self._is_member(vname):
       # Create object in env_manager
       # print(self.env_manager.environment[-1][0]['o'].v)
-      # quit()
+      # quit()=
       self.env_manager.create_new_member_symbol(vname)
       self.env_manager.set(vname, value_type)
 
@@ -407,7 +406,8 @@ class Interpreter(InterpreterBase):
       if args[0] not in self.type_to_default:
         super().error(ErrorType.TYPE_ERROR,f"Invalid type {args[0]}", self.ip)
       # Create the variable with a copy of the default value for the type
-      self.env_manager.set(var_name, copy.copy(self.type_to_default[args[0]]))
+      val = self.type_to_default[args[0]]
+      self.env_manager.set(var_name, Value(copy.copy(val.t), copy.copy(val.v)))
 
     self._advance_to_next_statement()
 
@@ -447,7 +447,7 @@ class Interpreter(InterpreterBase):
     self.type_to_default[InterpreterBase.BOOL_DEF] = Value(Type.BOOL, False)
     self.type_to_default[InterpreterBase.VOID_DEF] = Value(Type.VOID, None)
     self.type_to_default[InterpreterBase.FUNC_DEF] = Value(Type.FUNC, FuncInfo([], start_ip=None))
-    self.type_to_default[InterpreterBase.OBJECT_DEF] = Value(Type.OBJECT, dict()) # TODO: object default value?
+    self.type_to_default[InterpreterBase.OBJECT_DEF] = Value(Type.OBJECT, {}) # TODO: object default value?
 
     # set up what types are compatible with what other types
     self.compatible_types = {}
@@ -545,9 +545,8 @@ class Interpreter(InterpreterBase):
       return val
 
     # look in func manager for variable
-    val = Value(Type.FUNC, self.func_manager.get_function_info(token))
-    if val != None:
-        return val
+    if self.func_manager.is_function(token):
+        return Value(Type.FUNC, self.func_manager.get_function_info(token))
     
     # not found
     super().error(ErrorType.NAME_ERROR,f"Unknown variable {token}", self.ip)

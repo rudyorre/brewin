@@ -8,11 +8,23 @@ import interpreterv3 as brewin
 import sys
 
 script = '''
-func main void  
-  var object x
-  assign x.a 10
-  assign x.b “salamander”
-  funccall print x.a " " x.b
+func print_list o:object void
+    if == o.val 30
+        funccall print 30
+        return
+    endif
+    funccall print o.val
+    funccall print_list o.next
+endfunc
+
+func main void
+    var object l1 l2 l3
+    assign l1.val 10
+    assign l2.val 20
+    assign l3.val 30
+    assign l1.next l2
+    assign l2.next l3
+    funccall print_list l1
 endfunc
 '''
 
