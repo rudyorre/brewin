@@ -9,8 +9,14 @@ import sys
 
 script = '''
 func main void
-    var object xyz
-    assign xyz.a 10
+  # var object x
+
+  # assign x.val 42
+  # funccall x.val 52        # x.val is an integer, not a func
+
+  var int x
+  assign x 42
+  funccall x 52
 endfunc
 '''
 

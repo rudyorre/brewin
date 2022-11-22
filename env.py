@@ -44,6 +44,18 @@ class EnvironmentManager:
           return True
     return False
 
+  def get_type(self, symbol):
+    nested_envs = self.environment[-1]
+    for env in reversed(nested_envs):
+      if self.is_member(symbol):
+        obj, mem = symbol.split('.')
+        if obj in env and mem in env[obj].value():
+          return env[obj].value()[mem].type()
+      else:
+        if symbol in env:
+          return env[symbol].type()
+    return None
+
   # create a new symbol in the most nested block's environment; error if
   # the symbol already exists
   def create_new_symbol(self, symbol: str, create_in_top_block=False):

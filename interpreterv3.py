@@ -177,12 +177,15 @@ class Interpreter(InterpreterBase):
     if self.func_manager.is_function(funcname):
       formal_params = self.func_manager.get_function_info(funcname)
     elif self.env_manager.is_variable(funcname):
+      if self.env_manager.get_type(funcname) != Type.FUNC:
+        super().error(ErrorType.TYPE_ERROR, f'{funcname} is not of type `func`')
       env_func = self.env_manager.get(funcname)
       formal_params = env_func.value()
       tmp_mappings[funcname] = env_func
     if formal_params is None:
         super().error(ErrorType.NAME_ERROR, f"Unknown function name {funcname}", self.ip)
 
+    print(formal_params)
     if len(formal_params.params) != len(args):
       super().error(ErrorType.NAME_ERROR,f"Mismatched parameter count in call to {funcname}", self.ip)
 
