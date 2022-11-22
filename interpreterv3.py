@@ -144,7 +144,13 @@ class Interpreter(InterpreterBase):
     Checks if a varname is a member of an object by checking if it
     has the dot notation and if the object exists within scope.
     '''
-    return len(varname.split('.')) == 2 and self.env_manager.is_variable(varname.split('.')[0])
+    tokens = varname.split('.')
+    if not len(tokens) == 2:
+      return False
+    obj, mem = tokens
+    if not self.env_manager.is_variable(obj) or self.env_manager.get(obj).type() != Type.OBJECT:
+      return False
+    return True
 
   def _funccall(self, args):
     if not args:
@@ -545,7 +551,7 @@ class Interpreter(InterpreterBase):
 
     # look in func manager for variable
     if self.func_manager.is_function(token):
-        return Value(Type.FUNC, self.func_manager.get_function_info(token))
+      return Value(Type.FUNC, self.func_manager.get_function_info(token))
     
     # not found
     super().error(ErrorType.NAME_ERROR,f"Unknown variable {token}", self.ip)

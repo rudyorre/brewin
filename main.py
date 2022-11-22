@@ -9,9 +9,8 @@ import sys
 
 script = '''
 func main void
-    var object x
-    assign x.a 10
-    funccall print x.b
+    var object xyz
+    assign xyz.a 10
 endfunc
 '''
 
