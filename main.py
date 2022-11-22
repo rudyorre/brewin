@@ -9,14 +9,21 @@ import sys
 
 script = '''
 func main void
-  # var object x
+    var int capture_me
+    assign capture_me 42
 
-  # assign x.val 42
-  # funccall x.val 52        # x.val is an integer, not a func
+    if > capture_me 10
+        var int capture_me
+        assign capture_me 1000
+        lambda a:int int
+            return + a capture_me    # the captured capture_me’s value is 1000
+        endlambda
+    endif
 
-  var int x
-  assign x 42
-  funccall x 52
+    var func f
+    assign f resultf
+    funccall f 10
+    funccall print resulti        # prints 1010
 endfunc
 '''
 

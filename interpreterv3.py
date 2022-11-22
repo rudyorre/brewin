@@ -185,7 +185,6 @@ class Interpreter(InterpreterBase):
     if formal_params is None:
         super().error(ErrorType.NAME_ERROR, f"Unknown function name {funcname}", self.ip)
 
-    print(formal_params)
     if len(formal_params.params) != len(args):
       super().error(ErrorType.NAME_ERROR,f"Mismatched parameter count in call to {funcname}", self.ip)
 
@@ -202,10 +201,10 @@ class Interpreter(InterpreterBase):
 
     # For lambdas, push captured variables into new environment
     for (var, var_type, var_name) in formal_params.captured_variables:
-      if self.env_manager.is_variable(var_name):
-        tmp_mappings[var_name] = copy.copy(self.env_manager.get(var_name))
-      else:
-        tmp_mappings[var_name] = var
+      # if self.env_manager.is_variable(var_name):
+      #   tmp_mappings[var_name] = copy.copy(self.env_manager.get(var_name))
+      # else:
+      tmp_mappings[var_name] = var
 
     # Push the parameters (after captured variables because parameters
     # will take precedent and will overwrite the captured variables w/ same symbols).
@@ -522,8 +521,9 @@ class Interpreter(InterpreterBase):
     elif self.env_manager.is_variable(funcname):
       func_info = self.env_manager.get(funcname).value()
     else:
-      print(f'func_info: {func_info}, funcname: {funcname}')
-      print(self.env_manager.environment)
+      pass
+      # print(f'func_info: {func_info}, funcname: {funcname}')
+      # print(self.env_manager.environment)
     # func_info = self.func_manager.get_function_info(funcname)
     if not func_info:
       super().error(ErrorType.NAME_ERROR,f"Unable to locate {funcname} function")
