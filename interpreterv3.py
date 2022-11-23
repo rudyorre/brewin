@@ -568,6 +568,12 @@ class Interpreter(InterpreterBase):
     if token == InterpreterBase.TRUE_DEF or token == Interpreter.FALSE_DEF:
       return Value(Type.BOOL, token == InterpreterBase.TRUE_DEF)
 
+    # type error for when a non-object type is called with dot notation
+    if len(token.split('.')) == 2:
+      obj, mem = token.split('.')
+      if self.env_manager.is_variable(obj) and self.env_manager.get(obj).type() != Type.OBJECT:
+        super().error(ErrorType.TYPE_ERROR, f'Dot operator used on a non-object variable `{token.split(".")[0]}`', self.ip)
+    
     # look in environments for variable
     if self.env_manager.is_variable(token):
       return self.env_manager.get(token)
@@ -576,12 +582,6 @@ class Interpreter(InterpreterBase):
     if self.func_manager.is_function(token):
       return Value(Type.FUNC, self.func_manager.get_function_info(token))
 
-    # type error for when a non-object type is called with dot notation
-    if len(token.split('.')) == 2:
-      obj, mem = token.split('.')
-      if self.env_manager.is_variable(obj) and self.env_manager.get(obj).type() != Type.OBJECT:
-        super().error(ErrorType.TYPE_ERROR, f'Dot operator used on a non-object variable `{token.split(".")[0]}`', self.ip)
-    
     # not found
     super().error(ErrorType.NAME_ERROR,f"Unknown variable {token}", self.ip)
 
