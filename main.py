@@ -33,10 +33,9 @@ def main():
     if len(sys.argv) == 1:
         interpreter.run(script.split('\n'))
     else:
-        pass
-        # file = open(sys.argv[1], 'r') if len(sys.argv) > 1 else text
-        # interpreter.run([line for line in file.readlines()])
-        # file.close()
+        file = open(sys.argv[1], 'r')
+        interpreter.run([line for line in file.readlines()])
+        file.close()
 
 if __name__ == '__main__':
     main()

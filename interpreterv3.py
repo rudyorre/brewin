@@ -63,6 +63,11 @@ class Interpreter(InterpreterBase):
       self._process_line()
       # if 'resultf' in self.env_manager.environment[-1][-1]:
       #   print('line:', self.env_manager.environment[-1][0]['resultf'].v.start_ip
+    # print(len(self.env_manager.environment[-1]))
+    # print()
+    # print('func2 start_ip:', self.env_manager.environment[-1][0]['func2'].v.start_ip)
+    for i, return_type in enumerate(self.func_manager.return_types):
+      pass # print(f'line {i + 1}: {return_type}')
 
   def _process_line(self):
     if self.trace_output:
@@ -259,7 +264,7 @@ class Interpreter(InterpreterBase):
           self._set_result(self.type_to_default[return_type])
       self.ip = self.return_stack.pop()
 
-  def _lambda(self, args):
+  def _lambda(self, args, line_start=None):
     # TODO: error handling
     lambda_func = FuncInfo(params=[], start_ip=self.ip + 1)
     # Get parameters
@@ -276,26 +281,36 @@ class Interpreter(InterpreterBase):
     # Count how many layers deep we are with nested lambdas within this one.
     depth = 0
 
-    for line_num in range(self.ip + 1, len(self.tokenized_program)):
+    if line_start is None:
+      line_start = self.ip
+    
+    for line_num in range(line_start + 1, len(self.tokenized_program)):
       tokens = self.tokenized_program[line_num]
       if not tokens:
         continue
-      if tokens[0] == InterpreterBase.ENDLAMBDA_DEF and self.indents[self.ip] == self.indents[line_num]:
+      if tokens[0] == InterpreterBase.ENDLAMBDA_DEF and self.indents[line_start] == self.indents[line_num]:
         self.ip = line_num + 1
         self._set_result(Value(Type.FUNC, lambda_func))
+        # self._set_result(Value(Type.FUNC, lambda_func))
         return
+      elif tokens[0] == InterpreterBase.LAMBDA_DEF:
+        # self.ip = line_num
+        # print(tokens)
+        # self._lambda(tokens[1:], line_num)
+        pass
       # elif tokens[0] == InterpreterBase.VAR_DEF:
       #   for token in tokens[2:]:
       #     new_vars.add(token)
       else:
         # for loop to capture all non-parameter variables that are used
         for token in tokens:
-          if self.env_manager.is_variable(token): #  and token not in new_vars:
+          if self.env_manager.is_variable(token) and not self._is_result(token): #  and token not in new_vars:
             var = self.env_manager.get(token)
             lambda_func.captured_variables.append((copy.copy(var), var.type(), token))
 
   def _endlambda(self, return_val=None):
-    self._endfunc()
+    print('endlambda()')
+    self._endfunc(return_val)
     # self._advance_to_next_statement()
 
   def _if(self, args):
@@ -477,6 +492,12 @@ class Interpreter(InterpreterBase):
     self.type_to_result[Type.BOOL] = 'b'
     self.type_to_result[Type.FUNC] = 'f'
     self.type_to_result[Type.OBJECT] = 'o'
+
+  def _is_result(self, symbol):
+    for suffix in self.type_to_result.values():
+      if symbol == (InterpreterBase.RESULT_DEF + suffix):
+        return True
+    return False
 
   # run a program, provided in an array of strings, one string per line of source code
   def _setup_operations(self):

@@ -1,0 +1,53 @@
+func main void
+  lambda a1:int func
+    lambda a2:int func
+      lambda s3:string func
+        var int a3
+        funccall strtoint s3
+        assign a3 resulti
+        lambda a4:int func
+          lambda a5:int func
+            lambda b6:bool func
+              var int a6
+              if b6
+                assign a6 + a4 a2
+              else
+                assign a6 + a3 a2
+              endif
+              lambda a7:int func
+                lambda a8:int func
+                  lambda a9:int func
+                    lambda a10:int int
+                      return - + a1 - a3 * + a6 a8 a4 * a5 - a2 - a10 + a9 a7
+                    endlambda
+                    return resultf
+                  endlambda
+                  return resultf
+                endlambda
+                return resultf
+              endlambda
+              return resultf
+            endlambda
+            return resultf
+          endlambda
+          return resultf
+        endlambda
+        return resultf
+      endlambda
+      return resultf
+    endlambda
+    return resultf
+  endlambda
+  
+  funccall resultf 35   # L1
+  funccall resultf 6    # L2
+  funccall resultf "1"  # L3
+  funccall resultf 12   # L4
+  funccall resultf 3    # L5
+  funccall resultf True # L6
+  funccall resultf 9    # L7
+  funccall resultf 2    # L8
+  funccall resultf 4    # L9
+  funccall resultf -1   # L10
+  funccall print resulti
+endfunc

@@ -1,23 +1,3 @@
-Running resultf twice in a function doesn't work for some reason: 
-```
-func f func
-    var int x
-    assign x 3
-    lambda void
-        funccall print x
-    endlambda
-    
-    funccall resultf
-    funccall resultf
-
-    return resultf
-endfunc
-
-func main void
-    funccall f
-endfunc
-```
-
 Some weirdness with this code too:
 ```
 # func foo i:int void
