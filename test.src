@@ -2,3 +2,8 @@ func main void
   var string xyz
   assign xyz.a 10      # results in a type error when this line runs
 endfunc
+
+func main1 void
+  var object x
+  funccall print x.a
+endfunc
