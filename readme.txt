@@ -1,56 +1,43 @@
-Some weirdness with this code too:
-```
-# func foo i:int void
-    # assign this.val i
-    funccall print i
-# endfunc
+I figured that a bug I had is that if a function "x" takes in a lambda function with a parameter with the same symbol "x", it will mess up the program. Realized this with only 6 minutes left and I believe this is the reason why I wasn't able to pass the Church encoding test.
 
-func f func
-    var int x
-    assign x 3
-    lambda void
-        funccall print x
-    endlambda
-    return resultf
+By renaming the variables in the Church encoding test such that none of the parameters have the same name as the function names, it outputs the correct output:
+```
+# Church encoding
+# succ = \n. \f. \x. f (n f x)
+func succ n5:func func
+  lambda f7:func x8:int int
+    funccall n5 f7 x8
+    funccall f7 resulti
+    return resulti
+  endlambda
+  return resultf
+endfunc
+
+func getnum n3:func int
+  lambda x2:int int
+    return + x2 1
+  endlambda
+  funccall n3 resultf 0
+  return resulti
 endfunc
 
 func main void
-    var int x
-    assign x 69
-
-    lambda func
-        var int y
-        assign y 2
-        lambda int
-            var int x
-            assign x 2
-            return + x y
-        endlambda
-        # funccall print x
-        return resultf
-    endlambda
-
-    funccall f
-    var func g
-    assign g resultf
-    funccall g
-    # funccall print resulti
+  var func zero
+  # zero = \f. \x. x
+  lambda f1:func x1:int int
+    return x1
+  endlambda
+  assign zero resultf
+  
+  funccall getnum zero
+  funccall print resulti
+  
+  var func one
+  funccall succ zero
+  assign one resultf
+  funccall getnum one
+  funccall print resulti
 endfunc
 ```
 
-Make the error here valid:
-```
-func print_list void
-
-endfunc
-
-func main void
-    var object l1 l2 l3
-    var object test
-    assign l1.val 13
-    funccall print l3.val
-
-    # var object l4
-    # funccall print l4.val
-endfunc
-```
+Outputs [0, 1] correctly.

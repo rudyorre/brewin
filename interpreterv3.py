@@ -210,7 +210,6 @@ class Interpreter(InterpreterBase):
       #   tmp_mappings[var_name] = copy.copy(self.env_manager.get(var_name))
       # else:
       tmp_mappings[var_name] = var
-
     # Push the parameters (after captured variables because parameters
     # will take precedent and will overwrite the captured variables w/ same symbols).
     for formal, actual in zip(formal_params.params, args):
@@ -233,6 +232,7 @@ class Interpreter(InterpreterBase):
     # and add our parameters to the env
     self.env_manager.push()
     self.env_manager.import_mappings(tmp_mappings)
+    # print(self.env_manager.environment[-1][0]['x'].value())
 
   def _endfunc(self, return_val=None):
     if not self.return_stack:  # done with main!
