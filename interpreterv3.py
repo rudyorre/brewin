@@ -309,7 +309,6 @@ class Interpreter(InterpreterBase):
             lambda_func.captured_variables.append((copy.copy(var), var.type(), token))
 
   def _endlambda(self, return_val=None):
-    print('endlambda()')
     self._endfunc(return_val)
     # self._advance_to_next_statement()
 
