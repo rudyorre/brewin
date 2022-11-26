@@ -1,5 +1,9 @@
-<h1 align="center">Brewin</h1>
-<h4 align="center">An interpretted programming language written fully in Python.</h4>
+<p align="center">
+  <img src="brewin-logo.png" width=35% height=35%>
+</p>
+
+<h1>Brewin</h1>
+<h4>An interpretted programming language written fully in Python.</h4>
 
 ## Previous Versions
 - [Brewin v2](https://github.com/rudyorre/brewin-v2)
@@ -58,3 +62,5 @@ You can find out more about our autograder, including how to run it, in [its acc
 This is an unlicensed repository; even though the source code is public, it is **not** governed by an open-source license.
 
 This code was primarily written by [Carey Nachenberg](http://careynachenberg.weebly.com/), with support from his TAs for the [Fall 2022 iteration of CS 131](https://ucla-cs-131.github.io/fall-22/).
+
+The logo was generated with [https://logo.com](https://logo.com).

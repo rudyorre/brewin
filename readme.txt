@@ -40,4 +40,4 @@ func main void
 endfunc
 ```
 
-Outputs [0, 1] correctly.
+Outputs [0, 1] correctly. Other than this bug, I don't know of any bugs in this program although I'm sure this isn't the only issue.
