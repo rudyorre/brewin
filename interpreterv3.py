@@ -592,8 +592,7 @@ class Interpreter(InterpreterBase):
       self.env_manager.create_new_member_symbol(varname)
       self.env_manager.set(varname, to_value_type)
     
-    value_type = self.env_manager.get(varname)
-    if value_type == None:
+    if (value_type := self.env_manager.get(varname)) == None:
       super().error(ErrorType.NAME_ERROR,f"Assignment of unknown variable {varname}", self.ip)
     value_type.set(to_value_type)
 
