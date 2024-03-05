@@ -131,7 +131,7 @@ class InterpreterBase:
           if top_item[1] == InterpreterBase.ENDIF_DEF and top_item[2] == indents[i]:
             stack.append(top_item) # reappend endif for later
             continue
-          self.error(ErrorType.SYNTAX_ERROR,f'Mismatched else', i)
+          self.error(ErrorType.SYNTAX_ERROR,'Mismatched else', i)
 
         if top_item[1] != first_tokens[i] or top_item[2] != indents[i]:
           self.error(ErrorType.SYNTAX_ERROR,f'Missing {top_item[1]} for block on line {top_item[0]}', top_item[0])
