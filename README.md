@@ -1,66 +1,197 @@
 <p align="center">
-  <img src="brewin-logo.png" width=35% height=35%>
+  <img src="assets/brewin.png" width="175px">
 </p>
+<h1 align="center">Brewin</h1>
+<h4 align="center">An interpretted programming language written fully in Python.</h4>
 
-<h1>Brewin</h1>
-<h4>An interpretted programming language written fully in Python.</h4>
+## Introduction
 
-## Previous Versions
-- [Brewin v2](https://github.com/rudyorre/brewin-v2)
-- [Brewin v1](https://github.com/rudyorre/brewin-v1)
+The purpose of this project is to create a simple programming language that is easy to learn and use. Brewin is an interpreted, statically-typed language that supports basic programming constructs such as variables, conditionals, loops, functions, and more. The language is designed to be easy to read and write, with a syntax that is similar to Python.
 
-## Undefined Behavior
-As this language is in its infancy, there is a lot of undefined behavior, below are some of the more notable ones:
-- Any syntax errors. You can assume that all programs will be syntactically correct.
-- You will never have any nested double quotes inside strings in Brewin++. You may have single quotes inside double quotes.
-- We will never call strtoint on a non-integral value.
-- The program will always have valid indentation.
-- You will never have variables with the same names as reserved keywords, e.g. `func`, `int`, etc.
-  - Note: `lambda`, `this`, and object are new reserved keywords in Brewin#
-- You can assume that we will not manually define a result variable in any of our tests. For example, we will never have the statement var int `resulti` in any of our tests.
-  - This includes `resultf` and `resulto`.
-- We will never call print with arguments of object or function types (a variable or a literal).
-- Different from Project #2, we will always call functions (including lambda functions) with the correct number of arguments that match the definition. Feel free to keep the checking behavior in Project #2.
-- As a result, there is no need to support implicit partial application/currying. We will not test you on this.
-- We will never create a circular object when testing (e.g. x.a = x).
-- Lambda functions can appear in object methods. But you can assume that the lambda functions defined within object method functions do not use or capture the variable “this”.
-- We will not create variables that have the same name of globally-defined functions, or shadow a globally-defined function name with a variable.
-- We will never assign built-in functions to func variables; i.e. we will not test you with `assign f input`, `assign f strtoint`, or `assign f print`
+Also, this was my implementation for the Programming Language course at UCLA with Professor [Carey Nachenberg](http://careynachenberg.weebly.com/), so credits to him for the specifications and the idea of the language 🤩.
 
-## Garbage Collection
-All of those closures and objects you’re Brewin# programs are creating take up memory.  However, we simply rely upon Python’s garbage collection to free up discarded objects for us. There’s no need to build own garbage collector.
+## Setup
 
-Hey there! This is a template repository that contains the necessary boilerplate for [CS 131](https://ucla-cs-131.github.io/fall-22/)'s quarter-long project: making an interpreter. The project specs are as follows:
+Clone the repository and navigate to the Brewin directory:
 
-1. [Project 1 Spec](https://docs.google.com/document/d/17Q4EPgHLMlMuQABhmgTpk_Ggxij0DZwvPQO2uzVVPzk/)
-2. [Project 2 Spec](https://docs.google.com/document/d/14cZ7s-RPDO3FvYCDFMlS_NrGSSPUmavSX0wzsN-yHDw/)
-3. [Project 3 Spec](https://docs.google.com/document/d/1YCSxxlHnuMBALfGzZNcDeY-AemcWxOlFQKHxsARk1Tg/)
+```bash
+git clone https://github.com/rudyorre/brewin.git
+cd brewin
+```
 
-There are three stages to the project; students are currently at the third. Thus, this folder contains the necessary bootstrapping code:
+This was written fully with just Python's standard library, so no need to install any dependencies 🐍.
 
-- `intbase.py`, the base class and enum definitions for the interpreter
-- a sample `readme.txt`, which should illustrate any known bugs/issues with the program (or, an "everything's good!")
+## Running a Brewin program
 
-As well as **canonical solutions for Project 1 and 2** (written by Carey):
+To run a program written in Brewin, use the following command:
 
-- `interpreterv1.py`/`interpreterv2.py`: a top-level entrypoint: has some utility classes, finding the main function, the interpreter loop, and handlers for each token type
-- `env_v1.py`/`env_v2.py`: manages the "environment" / state for a program - includes scoping
-- `func_v1.py`/`func_v2.py`: manages and caches functions, types
-- `tokenize.py`: tokenization logic
+```bash
+python3 interpreterv3.py your_program.src
+```
 
-You do not have to use the canonical solutions for Project 3; in particular, since you didn't write the code, it may be confusing!
+# Advanced Features
 
-Some notes on your submission (for Project 3)
+## First-Class Functions and Higher-Order Functions
 
-1. You **must have a top-level, versioned `interpreterv3.py` file** that **exports the `Interpreter` class**. If not, **your code will not run on our autograder**.
-2. You may also submit one or more additional `.py` modules that your interpreter uses, if you decide to break up your solution into multiple `.py` files.
+In Brewin, functions are first-class citizens. This means that functions that
+can be passed as arguments to other functions, returned as values from other
+functions, assigned to variables, and stored in data structures. This feature
+allows for the creation of higher-order functions, which are funcitons that take other functions as arguments, return functions as results, or both.
 
-You can find out more about our autograder, including how to run it, in [its accompanying repo](https://github.com/UCLA-CS-131/fall-22-autograder).
+### Function Variables
 
-## Licensing and Attribution
+You can define variables of the `func` type which can hold functions or closures. Here's an example:
 
-This is an unlicensed repository; even though the source code is public, it is **not** governed by an open-source license.
+```bash
+var func f  # f has a type of func and is a func variable
+```
 
-This code was primarily written by [Carey Nachenberg](http://careynachenberg.weebly.com/), with support from his TAs for the [Fall 2022 iteration of CS 131](https://ucla-cs-131.github.io/fall-22/).
+In this example, `f` is a variable that can hold a function.
 
-The logo was generated with [https://logo.com](https://logo.com).
+### Assigning Functions to Variables
+
+You can assign functions to varible of type `func`. Here's an example:
+
+```bash
+func inc x:int int
+  return + x 1
+endfunc
+
+assign f inc  # f holds the inc function!
+```
+
+In this example, the `inc` function is assigned to the variable `f`.
+
+### Calling Functions Stored in Variables
+
+You can call a function that is stored in a variable using the `funccall` keyword. Here's an example:
+
+```bash
+funccall f 10 # call inc thru f
+```
+
+In this example, the function sotred in the varible `f` is called with the argument `10`.
+
+### Example Program
+
+Here's a complete example program that demonstrates these concepts:
+
+```bash
+func inc x:int int
+  return + x 1
+endfunc
+
+func main void
+  var func f             # f has a type of func and is a func variable
+  assign f inc           # f holds the inc function!
+  funccall f 10          # call inc thru f
+  funccall print resulti # prints 11
+endfunc
+```
+
+In this program, the `inc` function is assigned to the variable `f`, and then called through `f`. The result is printed out, which is `11`.
+
+## Lambdas and Closures
+
+Brewin now supports the creation of anonymous functions, also known as lambda functions. These functions can be nested and can capture free variables, creating closures.
+
+### Lambda Functions
+Lambda functions are defined using the lambda keyword. They do not have a name and can be assigned to variables or returned from functions. Here's an example:
+
+```bash
+lambda y:int int     # defines a lambda/closure and stores in resultf
+  var int z
+  assign z + x y
+  return z
+endlambda
+```
+
+In this example, a lambda function is defined that takes an integer `y` and returns an integer. The lambda function is stored in the `resultf` variable.
+
+### Closures
+Closures are functions that capture free variables from their surrounding scope. In the example above, the lambda function captures the variable x from its surrounding scope, creating a closure.
+
+### Returning Lambda Functions
+You can return a lambda function from a function. Here's an example:
+
+```bash
+return resultf  # return our lambda/closure
+```
+
+In this example, the lambda function stored in `resultf` is returned from the function.
+
+### Example Program
+Here's a complete example program that demonstrates these concepts:
+
+```bash
+func create_lambda x:int func
+  lambda y:int int     # defines a lambda/closure and stores in resultf
+    var int z
+    assign z + x y
+    return z
+  endlambda
+
+  return resultf       # return our lambda/closure
+endfunc
+
+func main void
+  var func f g
+  funccall create_lambda 10   # create a lambda that captures x=10
+  assign f resultf            # f holds our lambda's closure
+ 
+  funccall create_lambda 100  # create a lambda that captures x=100
+  assign g resultf            # f holds our lambda's closure
+
+  funccall f 42
+  funccall print resulti      # prints 52
+
+  funccall g 42
+  funccall print resulti      # prints 142
+endfunc
+```
+
+In this program, the `create_lambda` function creates a lambda function that captures the variable `x`. This lambda function is then assigned to the variables `f` and `g` with different captured values for `x`. When the lambda functions stored in `f` and `g` are called, they use the captured values of `x` to compute their results.
+
+## Objects
+
+Brewin now supports the creation of objects which can hold an arbitrary set of member variables of all Brewin types (including function member variables and other object member variables). Brewin# doesn’t support classes, just objects, like JavaScript. To add a member to an object, you just assign it (e.g., `x.member = 10`, like in Python). Brewin# doesn’t require you to declare the member variables explicitly or specify their types.
+
+### Creating and Using Objects
+Here's an example of creating an object and using its members:
+
+```bash
+func main void
+ var object foo             # foo is an object!
+ assign foo.x 5             # creates a member x in foo, e.g., foo.x,
+                            # and sets its value to 5
+ assign foo.x + foo.x 1     # increments foo.x
+ funccall print foo.x
+ assign foo.x "bar"         # redefines foo.x to be a string
+ funccall print foo.x
+endfunc
+```
+
+In this example, an object `foo` is created, a member `x` is added to `foo` and its value is manipulated.
+
+### Member Functions
+You can add member functions to your objects. Here's an example:
+
+```bash
+# defines a function which will be used as a member function below
+func foo i:int void
+  assign this.val i    # sets the val member of the passed-in object
+endfunc
+
+func main void
+  var object x	
+  assign x.our_method foo      # sets x.our_method to foo()
+
+  funccall x.our_method 42     # calls foo(42)
+  funccall print x.val         # prints 42
+endfunc
+```
+
+In this example, a function `foo` is defined and then assigned as a member function of the object `x`. The function `foo` uses the `this` keyword to access the object being operated on. In this case, `this` refers to object `x`.
+
+### The `this` Keyword
+Like C++’s `this` and Python’s `self`, the `this` keyword is used to access the object being operated on. In the example above, `this` refers to object `x`.
