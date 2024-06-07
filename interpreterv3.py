@@ -560,7 +560,7 @@ class Interpreter(InterpreterBase):
     with it.
     '''
     if not token:
-      super().error(ErrorType.NAME_ERROR,f"Empty token", self.ip)
+      super().error(ErrorType.NAME_ERROR,"Empty token", self.ip)
     if token[0] == '"':
       return Value(Type.STRING, token.strip('"'))
     if token.isdigit() or token[0] == '-':
@@ -629,6 +629,6 @@ class Interpreter(InterpreterBase):
         stack.append(value_type)
 
     if len(stack) != 1:
-      super().error(ErrorType.SYNTAX_ERROR,f"Invalid expression", self.ip)
+      super().error(ErrorType.SYNTAX_ERROR,"Invalid expression", self.ip)
 
     return stack[0]

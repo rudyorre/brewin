@@ -33,7 +33,7 @@ class Tokenizer:
         end_quote = s.index('"', start_quote+1)
       except:
         if start_quote and not end_quote:
-          super().error(ErrorType.SYNTAX_ERROR,f"Mismatched quotes",line_num) #no
+          super().error(ErrorType.SYNTAX_ERROR,"Mismatched quotes",line_num) #no
       if start_quote is None:
         break
       else:
